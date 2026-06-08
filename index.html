@@ -3,166 +3,250 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#0F6E56">
+  <meta name="theme-color" content="#1a1a1a">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Golf Coach">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
   <title>Golf Coach</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
     :root{
-      --bg:#ffffff;--bg2:#f5f5f4;--bg3:#eeede8;
-      --text:#1a1a18;--text2:#6b6b67;--text3:#a0a09b;
-      --border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.22);
-      --green:#0F6E56;--green-light:#E1F5EE;--green-mid:#1D9E75;--green-dark:#085041;--green-text:#085041;
-      --amber-bg:#FAEEDA;--amber-text:#854F0B;
-      --coral-bg:#FAECE7;--coral-text:#993C1D;
-      --purple-bg:#EEEDFE;--purple-text:#534AB7;
-      --blue-bg:#E6F1FB;--blue-text:#185FA5;
-      --red:#A32D2D;--radius:12px;--radius-sm:8px;
+      --bg:#f9f9f7;--bg2:#f0f0ec;--bg3:#e8e8e2;
+      --surface:#ffffff;--surface2:#f5f5f1;
+      --text:#141412;--text2:#5a5a54;--text3:#a0a098;
+      --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.14);
+      --green:#1a6b4a;--green2:#22855d;--green-light:#eaf4ee;--green-text:#145238;
+      --amber:#92580a;--amber-bg:#fdf3e3;
+      --coral:#8b3a2a;--coral-bg:#fceee9;
+      --blue:#1a4a7a;--blue-bg:#e8f0fb;
+      --purple:#4a3a8a;--purple-bg:#f0eefb;
+      --red:#c0392b;
+      --radius:16px;--radius-sm:10px;--radius-xs:6px;
+      --shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.04);
+      --shadow-sm:0 1px 2px rgba(0,0,0,0.06);
     }
     @media(prefers-color-scheme:dark){
       :root{
-        --bg:#1c1c1a;--bg2:#252523;--bg3:#2e2e2b;
-        --text:#f0efe8;--text2:#9a9a94;--text3:#6a6a65;
-        --border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.2);
-        --green-light:#083d30;--green-text:#5DCAA5;
-        --amber-bg:#2e2008;--amber-text:#EF9F27;
-        --coral-bg:#2e1208;--coral-text:#F0997B;
-        --purple-bg:#1e1d3a;--purple-text:#AFA9EC;
-        --blue-bg:#0c1e30;--blue-text:#85B7EB;--red:#F09595;
+        --bg:#111110;--bg2:#1a1a18;--bg3:#222220;
+        --surface:#1e1e1c;--surface2:#252523;
+        --text:#f0efe8;--text2:#8a8a82;--text3:#5a5a54;
+        --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+        --green:#2a9e6a;--green2:#34b87c;--green-light:#0e2a1c;--green-text:#5dcaa5;
+        --amber:#d4882a;--amber-bg:#1e1408;
+        --coral:#e07060;--coral-bg:#1e100c;
+        --blue:#5090d4;--blue-bg:#0c1620;
+        --purple:#9080d4;--purple-bg:#140e28;
+        --red:#e05050;
+        --shadow:0 1px 3px rgba(0,0,0,0.3),0 4px 12px rgba(0,0,0,0.2);
       }
     }
-    html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);overflow:hidden}
-    .app{display:flex;flex-direction:column;height:100dvh;max-width:480px;margin:0 auto;background:var(--bg)}
-    .topbar{background:var(--green);padding:max(env(safe-area-inset-top),12px) 16px 12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-    .topbar-title{font-size:17px;font-weight:600;color:#E1F5EE}
-    .topbar-sub{font-size:11px;color:#5DCAA5;margin-top:1px}
-    .topbar-hcp{background:#085041;border-radius:20px;padding:4px 12px;font-size:13px;color:#9FE1CB;font-weight:500}
-    .content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
-    .page{display:none;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px))}
+    html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);overflow:hidden}
+    .app{display:flex;flex-direction:column;height:100dvh;max-width:430px;margin:0 auto;background:var(--bg)}
+
+    /* TOPBAR */
+    .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:max(env(safe-area-inset-top),14px) 20px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .topbar-left{}
+    .topbar-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);line-height:1}
+    .topbar-sub{font-size:11px;color:var(--text3);margin-top:2px;letter-spacing:0.03em}
+    .hcp-pill{background:var(--green);color:#fff;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:500;letter-spacing:0.02em}
+
+    /* CONTENT */
+    .content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg)}
+    .page{display:none;padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px))}
     .page.active{display:block}
-    .bottomnav{display:flex;border-top:0.5px solid var(--border);background:var(--bg);padding-bottom:env(safe-area-inset-bottom,0px);flex-shrink:0}
-    .nav-btn{flex:1;padding:8px 4px;font-size:10px;color:var(--text3);cursor:pointer;border:none;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color 0.15s}
-    .nav-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+    /* BOTTOM NAV */
+    .bottomnav{display:flex;border-top:1px solid var(--border);background:var(--surface);padding-bottom:env(safe-area-inset-bottom,0px);flex-shrink:0}
+    .nav-btn{flex:1;padding:10px 4px 8px;font-size:10px;color:var(--text3);cursor:pointer;border:none;background:none;display:flex;flex-direction:column;align-items:center;gap:4px;transition:color 0.2s;letter-spacing:0.02em;font-family:'DM Sans',sans-serif}
+    .nav-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke-width 0.2s}
     .nav-btn.active{color:var(--green)}
     .nav-btn.active svg{stroke-width:2}
-    .section-lbl{font-size:11px;font-weight:600;letter-spacing:0.07em;color:var(--text3);text-transform:uppercase;margin-bottom:8px;margin-top:18px}
+
+    /* SECTION LABELS */
+    .section-lbl{font-size:10px;font-weight:600;letter-spacing:0.1em;color:var(--text3);text-transform:uppercase;margin-bottom:10px;margin-top:22px}
     .section-lbl:first-child{margin-top:0}
-    .stat-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .stat-box{background:var(--bg2);border-radius:var(--radius-sm);padding:12px}
-    .stat-lbl{font-size:11px;color:var(--text2);margin-bottom:4px}
-    .stat-val{font-size:24px;font-weight:600;color:var(--text);line-height:1.1}
-    .stat-sub{font-size:11px;color:var(--text3);margin-top:3px}
-    .trend-up{color:var(--red)}.trend-dn{color:var(--green-mid)}
-    .insight{background:var(--green-light);border-radius:var(--radius-sm);padding:12px;display:flex;gap:10px;align-items:flex-start;margin-top:10px}
-    .insight svg{width:18px;height:18px;stroke:var(--green);fill:none;stroke-width:1.5;flex-shrink:0;margin-top:1px}
-    .insight-txt{font-size:13px;color:var(--green-text);line-height:1.55}
-    .insight-txt strong{font-weight:600}
-    .plan-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden}
-    .plan-hdr{padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
-    .plan-hdr-left{display:flex;align-items:center;gap:8px}
-    .plan-hdr-left svg{width:18px;height:18px;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
-    .plan-name{font-size:13px;font-weight:600}
-    .prio{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600}
-    .prio-high{background:var(--coral-bg);color:var(--coral-text)}
-    .prio-med{background:var(--amber-bg);color:var(--amber-text)}
-    .prio-low{background:var(--green-light);color:var(--green-text)}
-    .plan-mins{font-size:18px;font-weight:600;color:var(--text)}
-    .plan-body{border-top:0.5px solid var(--border);padding:8px 14px}
-    .drill{font-size:12px;color:var(--text2);padding:5px 0;border-bottom:0.5px solid var(--border);display:flex;gap:8px;align-items:flex-start;line-height:1.4}
-    .drill:last-child{border-bottom:none}
-    .drill-dot{width:5px;height:5px;border-radius:50%;background:var(--green-mid);flex-shrink:0;margin-top:5px}
-    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-    .chip{padding:7px 16px;border-radius:20px;font-size:13px;cursor:pointer;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text);transition:all 0.15s;font-weight:500}
-    .chip.active{background:var(--green-light);border-color:var(--green-mid);color:var(--green-text);font-weight:600}
+
+    /* STAT CARDS */
+    .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .stat-card{background:var(--surface);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow-sm);border:1px solid var(--border)}
+    .stat-lbl{font-size:11px;color:var(--text3);margin-bottom:6px;letter-spacing:0.02em}
+    .stat-val{font-family:'DM Serif Display',serif;font-size:28px;color:var(--text);line-height:1}
+    .stat-sub{font-size:10px;color:var(--text3);margin-top:4px}
+    .stat-trend{font-size:10px;margin-top:4px;font-weight:500}
+    .trend-up{color:var(--red)}.trend-dn{color:var(--green2)}
+
+    /* INSIGHT */
+    .insight-card{background:var(--green-light);border-radius:var(--radius);padding:14px 16px;margin-top:12px;border:1px solid rgba(26,107,74,0.12)}
+    .insight-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+    .insight-header svg{width:16px;height:16px;stroke:var(--green2);fill:none;stroke-width:2;flex-shrink:0}
+    .insight-header span{font-size:11px;font-weight:600;color:var(--green);letter-spacing:0.05em;text-transform:uppercase}
+    .insight-body{font-size:13px;color:var(--green-text);line-height:1.6}
+    .insight-body strong{font-weight:600}
+
+    /* TIME CHIPS */
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+    .chip{padding:8px 18px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid var(--border2);background:var(--surface);color:var(--text2);transition:all 0.2s;font-weight:400;font-family:'DM Sans',sans-serif}
+    .chip.active{background:var(--green);border-color:var(--green);color:#fff;font-weight:500}
+
+    /* PLAN CARDS */
+    .plan-card{background:var(--surface);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border)}
+    .plan-hdr{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+    .plan-hdr-left{display:flex;align-items:center;gap:10px}
+    .plan-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .plan-icon svg{width:18px;height:18px;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+    .plan-meta{}
+    .plan-name{font-size:14px;font-weight:500;color:var(--text)}
+    .plan-prio{font-size:10px;color:var(--text3);margin-top:1px;letter-spacing:0.02em}
+    .plan-mins{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);flex-shrink:0}
+    .plan-body{border-top:1px solid var(--border);overflow:hidden;transition:max-height 0.3s ease}
+    .plan-body.collapsed{max-height:0}
+    .plan-body.expanded{max-height:2000px}
+    .drill-item{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;gap:12px}
+    .drill-item:last-child{border-bottom:none}
+    .drill-illustration{width:56px;height:56px;flex-shrink:0;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .drill-illustration svg{width:48px;height:48px}
+    .drill-content{}
+    .drill-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
+    .drill-desc{font-size:12px;color:var(--text2);line-height:1.55}
+    .drill-reps{display:inline-block;margin-top:5px;font-size:10px;font-weight:600;letter-spacing:0.05em;color:var(--green);background:var(--green-light);padding:2px 8px;border-radius:20px}
+
+    /* FORM */
+    .form-section{background:var(--surface);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow-sm);border:1px solid var(--border);margin-bottom:12px}
     .form-group{margin-bottom:14px}
-    .form-label{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:5px;display:block}
+    .form-group:last-child{margin-bottom:0}
+    .form-label{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:6px;display:block;letter-spacing:0.05em;text-transform:uppercase}
     .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    input[type=number],input[type=date],input[type=text]{width:100%;padding:11px 12px;font-size:16px;border:0.5px solid var(--border2);border-radius:var(--radius-sm);background:var(--bg2);color:var(--text);-webkit-appearance:none;outline:none;transition:border-color 0.15s}
-    input:focus{border-color:var(--green-mid)}
-    .save-btn{width:100%;padding:14px;background:var(--green);color:#E1F5EE;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:600;cursor:pointer;margin-top:6px}
+    .input-wrap{position:relative}
+    .input-suffix{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--text3);pointer-events:none}
+    input[type=number],input[type=date],input[type=text]{width:100%;padding:11px 14px;font-size:16px;border:1px solid var(--border2);border-radius:var(--radius-sm);background:var(--bg2);color:var(--text);-webkit-appearance:none;outline:none;transition:border-color 0.2s;font-family:'DM Sans',sans-serif}
+    input[type=number].has-suffix{padding-right:36px}
+    input:focus{border-color:var(--green);background:var(--surface)}
+    .save-btn{width:100%;padding:15px;background:var(--green);color:#fff;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:500;cursor:pointer;margin-top:4px;font-family:'DM Sans',sans-serif;letter-spacing:0.01em;transition:opacity 0.2s}
     .save-btn:active{opacity:0.8}
-    .msg{font-size:12px;text-align:center;margin-top:8px;min-height:18px}
-    .msg.ok{color:var(--green-mid)}.msg.err{color:var(--red)}
-    .round-item{background:var(--bg2);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
-    .round-date{font-size:11px;color:var(--text3)}
-    .round-score{font-size:22px;font-weight:600;color:var(--text)}
-    .round-stats{font-size:11px;color:var(--text2);margin-top:2px}
-    .del-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:6px}
-    .empty{text-align:center;padding:40px 20px;color:var(--text3)}
-    .empty svg{width:40px;height:40px;stroke:var(--border2);fill:none;stroke-width:1.5;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto}
-    .empty p{font-size:13px}
+    .msg{font-size:12px;text-align:center;margin-top:10px;min-height:16px}
+    .msg.ok{color:var(--green2)}.msg.err{color:var(--red)}
+
+    /* HISTORY */
+    .round-card{background:var(--surface);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-start;box-shadow:var(--shadow-sm);border:1px solid var(--border)}
+    .round-date{font-size:11px;color:var(--text3);margin-bottom:4px;letter-spacing:0.02em}
+    .round-score{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text);line-height:1}
+    .round-campo{font-size:12px;color:var(--text2);margin-top:2px}
+    .round-stats{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+    .round-stat-pill{font-size:11px;background:var(--bg2);border-radius:20px;padding:3px 10px;color:var(--text2)}
+    .del-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;flex-shrink:0;margin-top:2px}
+
+    /* RECORDS */
+    .record-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+
+    /* EMPTY */
+    .empty{text-align:center;padding:48px 20px;color:var(--text3)}
+    .empty-icon{width:48px;height:48px;margin:0 auto 12px;opacity:0.3}
+    .empty p{font-size:13px;line-height:1.5}
   </style>
 </head>
 <body>
 <div class="app">
   <div class="topbar">
-    <div>
+    <div class="topbar-left">
       <div class="topbar-title">Golf Coach</div>
-      <div class="topbar-sub">Tu entrenador personal</div>
+      <div class="topbar-sub">Entrenador personal</div>
     </div>
-    <div class="topbar-hcp">HCP 12</div>
+    <div class="hcp-pill">HCP 12</div>
   </div>
+
   <div class="content">
 
+    <!-- HOME -->
     <div id="page-home" class="page active">
-      <div class="section-lbl">Resumen</div>
-      <div class="stat-row">
-        <div class="stat-box"><div class="stat-lbl">Rondas registradas</div><div class="stat-val" id="h-rondas">0</div><div class="stat-sub">ultimas semanas</div></div>
-        <div class="stat-box"><div class="stat-lbl">Score promedio</div><div class="stat-val" id="h-score">-</div><div class="stat-sub" id="h-score-trend"></div></div>
+      <div class="section-lbl">Esta semana</div>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-lbl">Rondas</div><div class="stat-val" id="h-rondas">0</div><div class="stat-sub">registradas</div></div>
+        <div class="stat-card"><div class="stat-lbl">Score prom.</div><div class="stat-val" id="h-score">—</div><div class="stat-trend" id="h-trend"></div></div>
+        <div class="stat-card"><div class="stat-lbl">FIR prom.</div><div class="stat-val" id="h-fir">—</div><div class="stat-sub">objetivo 60%+</div></div>
+        <div class="stat-card"><div class="stat-lbl">Putts prom.</div><div class="stat-val" id="h-putts">—</div><div class="stat-sub">objetivo 32</div></div>
       </div>
-      <div class="stat-row" style="margin-top:8px">
-        <div class="stat-box"><div class="stat-lbl">FIR promedio</div><div class="stat-val" id="h-fir">-</div><div class="stat-sub">objetivo: 60%+</div></div>
-        <div class="stat-box"><div class="stat-lbl">Putts por ronda</div><div class="stat-val" id="h-putts">-</div><div class="stat-sub">objetivo: 32</div></div>
-      </div>
-      <div class="insight">
-        <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/><line x1="9" y1="21" x2="15" y2="21"/></svg>
-        <div class="insight-txt" id="insight-body">Registra tu primera ronda para recibir analisis personalizado basado en tus datos reales.</div>
+      <div class="insight-card">
+        <div class="insight-header">
+          <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/><line x1="9" y1="21" x2="15" y2="21"/></svg>
+          <span>Analisis del coach</span>
+        </div>
+        <div class="insight-body" id="insight-body">Registra tu primera ronda para recibir analisis personalizado basado en tus datos reales.</div>
       </div>
     </div>
 
+    <!-- REGISTRO -->
     <div id="page-registro" class="page">
       <div class="section-lbl">Nueva ronda</div>
-      <div class="form-group"><label class="form-label">Fecha</label><input type="date" id="f-fecha"></div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Score total</label><input type="number" id="f-score" placeholder="87" min="60" max="130"></div>
-        <div class="form-group"><label class="form-label">Putts totales</label><input type="number" id="f-putts" placeholder="34" min="18" max="60"></div>
+      <div class="form-section">
+        <div class="form-group">
+          <label class="form-label">Fecha</label>
+          <input type="date" id="f-fecha">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Score total</label>
+            <input type="number" id="f-score" placeholder="87" min="30" max="130">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Putts totales</label>
+            <input type="number" id="f-putts" placeholder="34" min="10" max="60">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">FIR %</label>
+            <div class="input-wrap">
+              <input type="number" id="f-fir" placeholder="50" min="0" max="100" class="has-suffix">
+              <span class="input-suffix">%</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">GIR %</label>
+            <div class="input-wrap">
+              <input type="number" id="f-gir" placeholder="33" min="0" max="100" class="has-suffix">
+              <span class="input-suffix">%</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Campo</label>
+          <input type="text" id="f-campo" placeholder="Club de Golf">
+        </div>
       </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Fairways (de 14)</label><input type="number" id="f-fir" placeholder="7" min="0" max="14"></div>
-        <div class="form-group"><label class="form-label">GIR (de 18)</label><input type="number" id="f-gir" placeholder="5" min="0" max="18"></div>
-      </div>
-      <div class="form-group"><label class="form-label">Campo</label><input type="text" id="f-campo" placeholder="Club de Golf Santiago"></div>
       <button class="save-btn" onclick="saveRound()">Guardar ronda</button>
       <div class="msg" id="save-msg"></div>
     </div>
 
+    <!-- PLAN -->
     <div id="page-plan" class="page">
-      <div class="section-lbl">Tiempo disponible esta semana</div>
+      <div class="section-lbl">Tiempo disponible</div>
       <div class="chips">
         <div class="chip" onclick="setTime(60,this)">1h</div>
         <div class="chip active" onclick="setTime(180,this)">3h</div>
         <div class="chip" onclick="setTime(240,this)">4h</div>
         <div class="chip" onclick="setTime(300,this)">5h</div>
       </div>
-      <div class="section-lbl">Plan recomendado</div>
+      <div class="section-lbl">Ejercicios recomendados</div>
       <div id="plan-cards"></div>
     </div>
 
+    <!-- STATS -->
     <div id="page-stats" class="page">
       <div class="section-lbl">Records personales</div>
-      <div class="stat-row">
-        <div class="stat-box"><div class="stat-lbl">Mejor FIR</div><div class="stat-val" id="s-best-fir">-</div></div>
-        <div class="stat-box"><div class="stat-lbl">Mejor score</div><div class="stat-val" id="s-best-score">-</div></div>
+      <div class="record-row">
+        <div class="stat-card"><div class="stat-lbl">Mejor FIR</div><div class="stat-val" id="s-best-fir">—</div></div>
+        <div class="stat-card"><div class="stat-lbl">Mejor score</div><div class="stat-val" id="s-best-score">—</div></div>
       </div>
-      <div class="section-lbl" style="margin-top:16px">Historial de rondas</div>
+      <div class="section-lbl">Historial</div>
       <div id="rounds-list"></div>
     </div>
 
   </div>
+
   <nav class="bottomnav">
     <button class="nav-btn active" onclick="showPage('home',this)">
       <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/></svg>Inicio
@@ -178,115 +262,381 @@
     </button>
   </nav>
 </div>
+
 <script>
-const PLANS={
+// ── SVG ILLUSTRATIONS ──────────────────────────────────────────────────────
+const ILLUS = {
+  address: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="24" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="24" y1="12" x2="24" y2="26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="16" y1="18" x2="24" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="24" y1="26" x2="18" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="24" y1="26" x2="30" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="16" y1="18" x2="32" y2="22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="33" cy="22" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+    <path d="M14 42 Q24 38 34 42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.3"/>
+  </svg>`,
+
+  gate: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="24" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="24" y1="12" x2="24" y2="26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="17" y1="17" x2="24" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="24" y1="26" x2="19" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="24" y1="26" x2="29" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="17" y1="17" x2="34" y2="22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="30" y1="28" x2="30" y2="36" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+    <line x1="36" y1="28" x2="36" y2="36" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+    <path d="M28 24 Q32 22 38 24" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2" fill="none" opacity="0.5"/>
+    <circle cx="35" cy="22" r="2" stroke="currentColor" stroke-width="1.5"/>
+  </svg>`,
+
+  putting_short: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="24" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="24" y1="12" x2="24" y2="28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="18" y1="20" x2="24" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="24" y1="28" x2="20" y2="38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="24" y1="28" x2="28" y2="38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="18" y1="20" x2="30" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="8" cy="40" r="2.5" fill="currentColor" opacity="0.7"/>
+    <circle cx="16" cy="40" r="2.5" stroke="currentColor" stroke-width="1.2" opacity="0.4"/>
+    <circle cx="24" cy="40" r="2.5" stroke="currentColor" stroke-width="1.2" opacity="0.4"/>
+    <path d="M6 40 Q15 36 26 40" stroke="currentColor" stroke-width="1" fill="none" opacity="0.2"/>
+  </svg>`,
+
+  putting_lag: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="24" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="24" y1="12" x2="24" y2="28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="18" y1="20" x2="24" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="24" y1="28" x2="20" y2="38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="24" y1="28" x2="28" y2="38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="18" y1="20" x2="30" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="44" cy="40" r="2.5" fill="currentColor" opacity="0.5"/>
+    <path d="M28 39 Q36 36 44 39" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2" fill="none" opacity="0.5"/>
+    <line x1="28" y1="38" x2="28" y2="42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+  </svg>`,
+
+  chipping: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="18" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="18" y1="12" x2="16" y2="26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="12" y1="18" x2="18" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="16" y1="26" x2="11" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="16" y1="26" x2="22" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="12" y1="18" x2="26" y2="28" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M26 28 Q32 20 40 30" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2" fill="none" opacity="0.6"/>
+    <circle cx="40" cy="31" r="2.5" fill="currentColor" opacity="0.6"/>
+    <path d="M8 42 L44 42" stroke="currentColor" stroke-width="1" opacity="0.2"/>
+    <path d="M34 42 Q37 38 40 42" stroke="currentColor" stroke-width="1.2" fill="none" opacity="0.4"/>
+  </svg>`,
+
+  bunker: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="18" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="18" y1="12" x2="16" y2="26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="11" y1="17" x2="18" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="16" y1="26" x2="11" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="16" y1="26" x2="22" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="11" y1="17" x2="28" y2="28" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M8 44 Q18 36 36 40 Q40 41 44 44" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.5"/>
+    <path d="M28 40 Q32 37 36 39" stroke="currentColor" stroke-width="1" fill="currentColor" fill-opacity="0.1" opacity="0.6"/>
+    <circle cx="30" cy="38" r="2" fill="currentColor" opacity="0.4"/>
+  </svg>`,
+
+  pitch: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="16" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="16" y1="12" x2="14" y2="26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="9" y1="17" x2="16" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="14" y1="26" x2="10" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="14" y1="26" x2="20" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="9" y1="17" x2="26" y2="28" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M26 28 Q30 16 40 26" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2" fill="none" opacity="0.6"/>
+    <circle cx="40" cy="27" r="2.5" fill="currentColor" opacity="0.5"/>
+    <line x1="38" y1="27" x2="38" y2="42" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" opacity="0.3"/>
+    <path d="M6 42 L44 42" stroke="currentColor" stroke-width="1" opacity="0.2"/>
+  </svg>`,
+
+  iron: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="24" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="24" y1="11" x2="24" y2="26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="16" y1="17" x2="24" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="24" y1="26" x2="19" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="24" y1="26" x2="29" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="16" y1="17" x2="34" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="35" cy="24" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+    <path d="M30 42 L44 42" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+    <circle cx="40" cy="42" r="3" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
+  </svg>`,
+
+  mental: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="24" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="24" y1="12" x2="24" y2="26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="17" y1="18" x2="24" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="24" y1="26" x2="19" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="24" y1="26" x2="29" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M32 10 Q38 8 36 14 Q34 18 30 16" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <circle cx="34" cy="9" r="1.5" fill="currentColor" opacity="0.5"/>
+    <path d="M36 18 L37 22" stroke="currentColor" stroke-width="1.2" opacity="0.4" stroke-linecap="round"/>
+  </svg>`
+};
+
+// ── PLAN DATA ──────────────────────────────────────────────────────────────
+const PLANS = {
   60:[
-    {name:"Driver / precision",color:"#993C1D",bg:"coral",prio:"high",mins:30,drills:["10 pelotas al 80% con alignment stick","Gate drill: 2 tees a 1m del driver","Misses controlados: draw y fade suaves"]},
-    {name:"Putting",color:"#085041",bg:"green",prio:"low",mins:20,drills:["Circulo 1.5m: 3 rondas sin fallar","Lag desde 8m: 5 pelotas, foco en pace"]},
-    {name:"Rutina mental",color:"#534AB7",bg:"purple",prio:"low",mins:10,drills:["Pre-shot routine: 10 repeticiones","Visualizacion del fairway objetivo"]}
+    {name:"Driver / Precision",icon:"coral",prio:"Alta",color:"var(--coral)",bg:"var(--coral-bg)",mins:30,drills:[
+      {name:"Swing al 80%",icon:"address",reps:"10 pelotas",desc:"Coloca un alignment stick en el suelo apuntando al target. Realiza el swing con un ritmo relajado, al 80% de tu maxima velocidad. El objetivo es contacto limpio y direccion, no distancia. Siente como el cuerpo rota completamente hacia el target en el follow-through."},
+      {name:"Gate Drill",icon:"gate",reps:"10 reps",desc:"Coloca dos tees en el suelo formando una puerta de unos 30cm de ancho, justo delante de la pelota. El objetivo es pasar el driver por la puerta sin tocar los tees. Este drill te fuerza a trazar una trayectoria de dentro hacia afuera, corrigiendo el slice."}
+    ]},
+    {name:"Putting",icon:"green",prio:"Base",color:"var(--green)",bg:"var(--green-light)",mins:20,drills:[
+      {name:"Circulo de 1.5m",icon:"putting_short",reps:"3 rondas",desc:"Coloca 6 pelotas en circulo alrededor del hoyo a 1.5 metros. El reto es embocar las 6 consecutivas sin fallar. Si fallas, empiezas desde cero. Este drill desarrolla la concentracion y la confianza en putts cortos bajo presion."},
+      {name:"Lag Putting",icon:"putting_lag",reps:"5 pelotas",desc:"Desde 8 metros, el objetivo no es embocar sino dejar la pelota dentro de un circulo imaginario de 60cm alrededor del hoyo. El enfoque esta en el ritmo y en calibrar la fuerza, los dos factores que mas afectan el numero de putts por ronda."}
+    ]}
   ],
   180:[
-    {name:"Driver / precision",color:"#993C1D",bg:"coral",prio:"high",mins:75,drills:["Gate drill: 2 tees a 1m del driver, 20 reps","10 pelotas con target de fairway especifico","Swing al 80%: foco en contacto limpio","Video analisis: 3 swings comparados"]},
-    {name:"Juego corto",color:"#854F0B",bg:"amber",prio:"med",mins:60,drills:["Chipping desde rough: 20 pelotas","Bunker: 15 salidas variando apertura","Up-and-down: 10 situaciones distintas"]},
-    {name:"Putting",color:"#085041",bg:"green",prio:"low",mins:45,drills:["Serie 1m-3m-5m: 5 rondas sin presion","Lag desde 10m: solo 2 putts maximo","Putting con ojos cerrados: feel del pace"]}
+    {name:"Driver / Precision",icon:"coral",prio:"Alta",color:"var(--coral)",bg:"var(--coral-bg)",mins:75,drills:[
+      {name:"Gate Drill",icon:"gate",reps:"20 reps",desc:"Coloca dos tees formando una puerta de 30cm justo delante de la pelota. Pasa el driver por la puerta en cada swing. Alterna entre intentar un draw suave y un fade suave. Este drill desarrolla control de path y face angle, las dos variables clave para encontrar el fairway."},
+      {name:"Swing con alignment stick",icon:"address",reps:"20 reps",desc:"Coloca un alignment stick en el suelo apuntando al target y otro paralelo para alinear los pies. Con cada swing, enfocate en que el cuerpo quede completamente girado hacia el target al terminar. La clave es la consistencia del finish, no la distancia."},
+      {name:"10 pelotas con target",icon:"gate",reps:"10 pelotas",desc:"Elige un target especifico en el rango, como un cartel o un area delimitada. Antes de cada pelota, ejecuta tu rutina pre-shot completa: alineacion, un practice swing, visualizacion. Esto entrena el proceso de juego real, no solo el swing mecanico."}
+    ]},
+    {name:"Juego corto",icon:"amber",prio:"Media",color:"var(--amber)",bg:"var(--amber-bg)",mins:60,drills:[
+      {name:"Chipping desde rough",icon:"chipping",reps:"20 pelotas",desc:"Practica chips desde mentada del rough, donde el lie es mas dificil. Usa el SW o LW con un stance estrecho y las manos adelantadas. El objetivo es salir limpio y controlar la distancia. Alterna entre lies buenos y malos para simular el campo real."},
+      {name:"Ejercicio de bunker",icon:"bunker",reps:"15 salidas",desc:"En el bunker, dibuja una linea en la arena y practica golpear exactamente 5cm detras de esa linea. La arena lanzara la pelota sin que el club la toque directamente. Varia la apertura de la cara entre shots para entender como cambia la trayectoria y el spin."},
+      {name:"Up and Down",icon:"chipping",reps:"10 situaciones",desc:"Crea 10 situaciones distintas alrededor del green: lies diferentes, distancias variadas, con y sin obstaculos. Para cada una, el objetivo es necesitar maximo 2 golpes para embocar (un chip o pitch + un putt). Lleva el conteo de cuantos up and downs logras."}
+    ]},
+    {name:"Putting",icon:"green",prio:"Base",color:"var(--green)",bg:"var(--green-light)",mins:45,drills:[
+      {name:"Serie 1m-3m-5m",icon:"putting_short",reps:"5 rondas",desc:"Empieza con un putt de 1m, si lo embocar mueve a 3m, si lo embocar mueve a 5m. Si fallas en cualquier distancia vuelves al principio. El objetivo es completar las 5 rondas completas. Desarrolla ritmo progresivo y confianza en distancias variadas."},
+      {name:"Lag desde 10m",icon:"putting_lag",reps:"10 pelotas",desc:"Putts largos desde 10 metros con un solo objetivo: que la pelota pare dentro de un circulo de 60cm. No intentes embocar, solo calibra la fuerza. Los 3-putts en rondas reales casi siempre vienen de una mala lectura de distancia, no de la linea."}
+    ]}
   ],
   240:[
-    {name:"Driver / precision",color:"#993C1D",bg:"coral",prio:"high",mins:90,drills:["Gate drill + alignment stick: 30 reps","10 pelotas draw + 10 fade con target","Simulacion: 9 tee shots con score anotado","Video: 5 swings comparados con referencia"]},
-    {name:"Juego corto",color:"#854F0B",bg:"amber",prio:"med",mins:75,drills:["Chipping rough y fairway: 30 reps","Bunker: 20 salidas variando lie y spin","Pitch 30-60 yds: control de distancia exacto"]},
-    {name:"Putting",color:"#085041",bg:"green",prio:"low",mins:45,drills:["Rutina distancias 1m-6m: completar sin fallar","10 consecutivos desde 1m bajo presion","Lag 12m: maximo 2 putts, 10 pelotas"]},
-    {name:"Rutina mental",color:"#534AB7",bg:"purple",prio:"low",mins:30,drills:["Pre-shot routine cronometrada: 20 reps","Course management en papel: 9 hoyos"]}
+    {name:"Driver / Precision",icon:"coral",prio:"Alta",color:"var(--coral)",bg:"var(--coral-bg)",mins:90,drills:[
+      {name:"Gate Drill intensivo",icon:"gate",reps:"30 reps",desc:"Coloca dos tees formando una puerta de 30cm. Divide las 30 repeticiones en 3 series: 10 buscando draw, 10 buscando fade y 10 rectas. Entre series descansa 2 minutos. Este patron de entrenamiento bloquea la mejora tecnica y acelera el aprendizaje motor."},
+      {name:"10 draw + 10 fade",icon:"address",reps:"20 pelotas",desc:"Con el driver, alterna intenciones: un shot buscando vuelo de derecha a izquierda (draw) y el siguiente de izquierda a derecha (fade). No importa si no sale perfecto, lo que entrenas es la capacidad de influir conscientemente en la curva del vuelo."},
+      {name:"Simulacion de 9 tee shots",icon:"gate",reps:"9 hoyos",desc:"Imagina los primeros 9 hoyos de tu campo habitual. Para cada uno, elige el club y la estrategia, ejecuta el shot y anota si lo hubieras encontrado en fairway. Esta es la forma mas eficiente de entrenar la toma de decisiones y el course management desde el tee."},
+      {name:"Analisis de video",icon:"address",reps:"5 swings",desc:"Graba 5 swings con el telefono desde atras (linea de vuelo). Compara tu path, posicion de las manos en el impacto y finish. No necesitas saber de biomecania, solo busca consistencia: que los 5 swings luzcan similares entre si."}
+    ]},
+    {name:"Juego corto",icon:"amber",prio:"Media",color:"var(--amber)",bg:"var(--amber-bg)",mins:75,drills:[
+      {name:"Chipping variado",icon:"chipping",reps:"30 pelotas",desc:"Practica chips desde rough, fairway y fringe. Para cada lie, ajusta el setup: stance mas estrecho para shots de bajo vuelo, mas abierto para shots altos. El objetivo es desarrollar criterio para elegir el chip correcto segun la situacion."},
+      {name:"Bunker con variaciones",icon:"bunker",reps:"20 salidas",desc:"Divide en 4 series de 5: lie plano, lie enterrado, lie cuesta arriba y lie cuesta abajo. Para cada uno ajusta la apertura de la cara y el punto de entrada en la arena. El objetivo es salir de cualquier bunker en maximo 2 golpes."},
+      {name:"Pitch de distancia",icon:"pitch",reps:"30-60 yds",desc:"Practica pitch shots desde 30, 45 y 60 yardas. Para cada distancia, usa la misma longitud de swing y varia la velocidad. Intenta dejar cada pelota dentro de un circulo de 3 metros del hoyo. Los pitch shots controlados son los que mas strokes ganan alrededor del green."}
+    ]},
+    {name:"Putting",icon:"green",prio:"Base",color:"var(--green)",bg:"var(--green-light)",mins:45,drills:[
+      {name:"Rutina 1m a 6m",icon:"putting_short",reps:"Sin fallar",desc:"Empieza desde 1 metro y completa una ronda sin fallar antes de avanzar 50cm. El objetivo es llegar a 6 metros. Si fallas en cualquier punto, vuelves a 1 metro. Este drill construye confianza progresiva y enseña a mantener la concentracion bajo presion."},
+      {name:"10 consecutivos desde 1m",icon:"putting_short",reps:"10 seguidos",desc:"Pon 10 pelotas en fila a 1 metro del hoyo. Debes embocarlas todas seguidas. Si fallas en el putt 8, empiezas desde cero. Puede parecer facil pero bajo presion muchos jugadores fallan estos putts en el campo. Aqui los entrenamos bajo presion real."},
+      {name:"Lag desde 12m",icon:"putting_lag",reps:"10 pelotas",desc:"Desde 12 metros, el objetivo es dejar la pelota maximo a 60cm del hoyo con un solo putt. Lleva el conteo: cuantos de los 10 cumplen el objetivo. Un buen score es 7 de 10. Si logras 9 de 10, aumenta la distancia a 15 metros."}
+    ]},
+    {name:"Rutina mental",icon:"purple",prio:"Base",color:"var(--purple)",bg:"var(--purple-bg)",mins:30,drills:[
+      {name:"Pre-shot routine",icon:"mental",reps:"20 reps",desc:"Define tu rutina en 3 pasos: (1) parate detras de la pelota y visualiza el shot, (2) alineate al target, (3) un practice swing y ejecuta. Cronometra que toda la rutina tome entre 15-20 segundos. La consistencia del tiempo es tan importante como los pasos."},
+      {name:"Course management",icon:"mental",reps:"9 hoyos",desc:"Con papel y lapiz, diseña el juego ideal en 9 hoyos de tu campo. Para cada hoyo decide: que club en el tee, donde quieres dejar la pelota, cuanto te permite fallar. Esto entrena el pensamiento estrategico que diferencia a un jugador de indice 12 de uno de indice 8."}
+    ]}
   ],
   300:[
-    {name:"Driver / precision",color:"#993C1D",bg:"coral",prio:"high",mins:100,drills:["Gate drill intensivo: 40 reps","10 draw + 10 fade + 10 rectas con target","18 tee shots simulacion competitiva anotada","Analisis video: comparar con swing ideal"]},
-    {name:"Juego corto",color:"#854F0B",bg:"amber",prio:"med",mins:90,drills:["Chipping: 40 pelotas desde lies distintos","Bunker: 25 salidas variando spin y distancia","Pitch 40-80 yds: control de yardaje exacto"]},
-    {name:"Putting",color:"#085041",bg:"green",prio:"low",mins:60,drills:["9 hoyos de putting competitivo con score","Lag 15m: maximo 2 putts, 10 pelotas","Putting un ojo tapado: control de linea"]},
-    {name:"Irons / approach",color:"#185FA5",bg:"blue",prio:"med",mins:30,drills:["10 pelotas con cada iron 7, 8, 9 y PW","GIR desde 150 yds: foco en centro de green"]},
-    {name:"Rutina mental",color:"#534AB7",bg:"purple",prio:"low",mins:20,drills:["Visualizacion + pre-shot routine completa","Course management: tomar decisiones en papel"]}
+    {name:"Driver / Precision",icon:"coral",prio:"Alta",color:"var(--coral)",bg:"var(--coral-bg)",mins:100,drills:[
+      {name:"Gate Drill 40 reps",icon:"gate",reps:"40 reps",desc:"La sesion mas completa del gate drill. Divide en 4 series de 10: draw, fade, rectas con objetivo izquierdo y rectas con objetivo derecho. Este volumen alto de repeticiones crea memoria muscular real. Descansa 90 segundos entre series."},
+      {name:"Simulacion competitiva",icon:"address",reps:"18 tee shots",desc:"Imagina los 18 hoyos de tu campo. Para cada hoyo anota la decision de club, ejecuta el shot y registra si seria fairway o rough. Al final tienes tu FIR simulado. Compara este numero con tu FIR real en The Grint para ver si el problema es decision o ejecucion."},
+      {name:"Draw-Fade-Recta",icon:"gate",reps:"30 pelotas",desc:"10 draws, 10 fades, 10 rectas. Para el draw: cierra levemente la stance y siente las manos girando en el impacto. Para el fade: abre levemente la stance y mantén la cara cuadrada. Para la recta: alignment stick en el suelo y foco en un target lejano."},
+      {name:"Analisis de video",icon:"address",reps:"5 swings",desc:"Graba desde atras y desde el lado. Busca que el path del club en la bajada pase por dentro de la linea de vuelo. Un path de afuera hacia adentro genera el slice que te cuesta fairways. Compara con tu swing ideal y busca 1 sola cosa para mejorar en la sesion."}
+    ]},
+    {name:"Juego corto",icon:"amber",prio:"Media",color:"var(--amber)",bg:"var(--amber-bg)",mins:90,drills:[
+      {name:"Chipping 40 pelotas",icon:"chipping",reps:"40 pelotas",desc:"La sesion de mayor volumen en juego corto. Divide por situaciones: 10 desde fairway, 10 desde rough corto, 10 desde rough largo y 10 desde fringe. Para cada grupo anota cuantos dejas a menos de 1.5 metros del hoyo. El benchmark es 6 de 10 en cada grupo."},
+      {name:"Bunker avanzado",icon:"bunker",reps:"25 salidas",desc:"5 salidas normales, 5 con la pelota enterrada, 5 cuesta arriba, 5 cuesta abajo y 5 con el objetivo a menos de 5 metros. El ultimo grupo es el mas dificil porque requires tanto altura como poca distancia. Aqui es donde muchos jugadores de indice 12 regalan golpes."},
+      {name:"Pitch de yardaje exacto",icon:"pitch",reps:"40-80 yds",desc:"Pon un marcador en el suelo a 40, 50, 60, 70 y 80 yardas. El objetivo es caer dentro de 2 metros del marcador. Para cada distancia usa el mismo club (SW o AW) y ajusta solo el largo del swing. Lleva el registro de precision por distancia."}
+    ]},
+    {name:"Putting",icon:"green",prio:"Base",color:"var(--green)",bg:"var(--green-light)",mins:60,drills:[
+      {name:"9 hoyos competitivo",icon:"putting_short",reps:"9 hoyos",desc:"Juega 9 hoyos de putting con score real. En cada hoyo, un 2 es par y un 3 es bogey. El objetivo es terminar en 18 o menos (par). Llevar score hace que cada putt importe, replicando la presion del campo real. Registra tu score y busca mejorarlo en cada sesion."},
+      {name:"Lag desde 15m",icon:"putting_lag",reps:"10 pelotas",desc:"La distancia mas larga del programa. Desde 15 metros, el objetivo es dejar la pelota a menos de 80cm. A esta distancia la velocidad es mucho mas importante que la linea. Practica solo pensar en la fuerza necesaria, sin preocuparte de donde apuntas exactamente."},
+      {name:"Putting con un ojo tapado",icon:"putting_short",reps:"20 putts",desc:"Tapa tu ojo no dominante (derecho si eres diestro). Esto fuerza al cerebro a leer la linea con mas precision y desarrolla la vision de profundidad en el putting. Muchos coaches usan este drill para corregir problemas de alineacion que son dificiles de ver a simple vista."}
+    ]},
+    {name:"Irons y approach",icon:"blue",prio:"Media",color:"var(--blue)",bg:"var(--blue-bg)",mins:30,drills:[
+      {name:"10 pelotas por hierro",icon:"iron",reps:"3 hierros",desc:"Elige el 7, el 9 y el PW. Para cada uno, 10 pelotas con un target especifico. El objetivo no es la distancia sino impactar el centro de la cara consistentemente. Un contacto limpio con el 7 llega siempre mas lejos que un contacto impuro con el 5."},
+      {name:"GIR desde 150 yds",icon:"iron",reps:"10 pelotas",desc:"Desde 150 yardas, el objetivo es el centro del green, no la bandera. Un GIR desde 150 metros que termina a 10 metros del hoyo es un exito. El error mas comun en handicaps 12 es intentar la bandera en lugar del centro del green, generando bogeys dobles innecesarios."}
+    ]},
+    {name:"Rutina mental",icon:"purple",prio:"Base",color:"var(--purple)",bg:"var(--purple-bg)",mins:20,drills:[
+      {name:"Pre-shot routine",icon:"mental",reps:"20 reps",desc:"Ejecuta tu rutina completa en cada shot de la sesion. No solo en los shots dificiles. La rutina debe ser identica en el rango que en el campo. Si tardas 18 segundos en el campo, debes tardar 18 segundos en el rango. La consistencia de la rutina predice la consistencia del swing."},
+      {name:"Course management 18",icon:"mental",reps:"18 hoyos",desc:"Diseña el juego ideal en los 18 hoyos de tu campo. Para cada hoyo establece: (1) club del tee y zona objetivo, (2) zona de approach preferida, (3) que parte del green atacar segun la posicion de la bandera. Este ejercicio puede quitarte 3-5 golpes sin mejorar el swing."}
+    ]}
   ]
 };
-const BG={coral:"var(--coral-bg)",amber:"var(--amber-bg)",green:"var(--green-light)",purple:"var(--purple-bg)",blue:"var(--blue-bg)"};
-const ICOL={coral:"var(--coral-text)",amber:"var(--amber-text)",green:"var(--green-text)",purple:"var(--purple-text)",blue:"var(--blue-text)"};
-const PRIO={high:"Alta",med:"Media",low:"Base"};
-const PRIO_C={high:"prio-high",med:"prio-med",low:"prio-low"};
-let rounds=JSON.parse(localStorage.getItem('golf-rounds')||'[]');
-let planTime=180;
-function save(){localStorage.setItem('golf-rounds',JSON.stringify(rounds));}
-function showPage(id,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
+
+const COLOR_MAP = {
+  coral:{color:"var(--coral)",bg:"var(--coral-bg)"},
+  amber:{color:"var(--amber)",bg:"var(--amber-bg)"},
+  green:{color:"var(--green)",bg:"var(--green-light)"},
+  purple:{color:"var(--purple)",bg:"var(--purple-bg)"},
+  blue:{color:"var(--blue)",bg:"var(--blue-bg)"}
+};
+
+const PRIO_COLOR = {
+  "Alta":"var(--coral)",
+  "Media":"var(--amber)",
+  "Base":"var(--green)"
+};
+
+let rounds = JSON.parse(localStorage.getItem('golf-rounds-v2') || '[]');
+let planTime = 180;
+let expandedCards = {};
+
+function save() { localStorage.setItem('golf-rounds-v2', JSON.stringify(rounds)); }
+
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
   btn.classList.add('active');
-  if(id==='stats')renderStats();
-  if(id==='home')updateHome();
+  if (id === 'stats') renderStats();
+  if (id === 'home') updateHome();
 }
-function setTime(t,el){
-  planTime=t;
-  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+
+function setTime(t, el) {
+  planTime = t;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
+  expandedCards = {};
   renderPlan();
 }
-function renderPlan(){
-  const data=PLANS[planTime];
-  document.getElementById('plan-cards').innerHTML=data.map(d=>`
-    <div class="plan-card">
-      <div class="plan-hdr" style="background:${BG[d.bg]}">
-        <div class="plan-hdr-left">
-          <svg viewBox="0 0 24 24" style="stroke:${ICOL[d.bg]}"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
-          <span class="plan-name" style="color:${d.color}">${d.name}</span>
-          <span class="prio ${PRIO_C[d.prio]}">${PRIO[d.prio]}</span>
-        </div>
-        <span class="plan-mins">${d.mins}m</span>
-      </div>
-      <div class="plan-body">${d.drills.map(dr=>`<div class="drill"><div class="drill-dot"></div>${dr}</div>`).join('')}</div>
-    </div>`).join('');
+
+function toggleCard(idx) {
+  expandedCards[idx] = !expandedCards[idx];
+  const body = document.getElementById('drill-body-' + idx);
+  if (expandedCards[idx]) {
+    body.classList.remove('collapsed');
+    body.classList.add('expanded');
+  } else {
+    body.classList.remove('expanded');
+    body.classList.add('collapsed');
+  }
 }
-function saveRound(){
-  const score=parseInt(document.getElementById('f-score').value);
-  const putts=parseInt(document.getElementById('f-putts').value);
-  const fir=parseInt(document.getElementById('f-fir').value);
-  const gir=parseInt(document.getElementById('f-gir').value)||0;
-  const fecha=document.getElementById('f-fecha').value;
-  const campo=document.getElementById('f-campo').value||'Campo';
-  const msg=document.getElementById('save-msg');
-  if(!fecha||isNaN(score)||isNaN(putts)||isNaN(fir)){msg.textContent='Completa score, putts, fairways y fecha.';msg.className='msg err';return;}
-  rounds.unshift({score,putts,fir,gir,fecha,campo});
+
+function renderPlan() {
+  const data = PLANS[planTime];
+  document.getElementById('plan-cards').innerHTML = data.map((d, i) => {
+    const cm = COLOR_MAP[d.icon] || COLOR_MAP.green;
+    const isOpen = expandedCards[i];
+    return `
+    <div class="plan-card">
+      <div class="plan-hdr" onclick="toggleCard(${i})">
+        <div class="plan-hdr-left">
+          <div class="plan-icon" style="background:${cm.bg}">
+            <svg viewBox="0 0 24 24" style="stroke:${cm.color}">
+              <circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+              <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+              <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+            </svg>
+          </div>
+          <div class="plan-meta">
+            <div class="plan-name">${d.name}</div>
+            <div class="plan-prio" style="color:${PRIO_COLOR[d.prio]}">${d.prio} · ${d.drills.length} ejercicios</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="plan-mins">${d.mins}m</div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2" stroke-linecap="round" style="transition:transform 0.2s;transform:rotate(${isOpen?'180deg':'0deg'})"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="plan-body ${isOpen ? 'expanded' : 'collapsed'}" id="drill-body-${i}">
+        ${d.drills.map(dr => `
+          <div class="drill-item">
+            <div class="drill-illustration" style="color:${cm.color}">${ILLUS[dr.icon] || ILLUS.address}</div>
+            <div class="drill-content">
+              <div class="drill-name">${dr.name}</div>
+              <div class="drill-desc">${dr.desc}</div>
+              <span class="drill-reps">${dr.reps}</span>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function saveRound() {
+  const score = parseInt(document.getElementById('f-score').value);
+  const putts = parseInt(document.getElementById('f-putts').value);
+  const fir = parseInt(document.getElementById('f-fir').value);
+  const gir = parseInt(document.getElementById('f-gir').value) || 0;
+  const fecha = document.getElementById('f-fecha').value;
+  const campo = document.getElementById('f-campo').value || 'Campo';
+  const msg = document.getElementById('save-msg');
+  if (!fecha || isNaN(score) || isNaN(putts) || isNaN(fir)) {
+    msg.textContent = 'Completa score, putts, FIR% y fecha.';
+    msg.className = 'msg err'; return;
+  }
+  if (fir < 0 || fir > 100 || gir < 0 || gir > 100) {
+    msg.textContent = 'FIR y GIR deben ser entre 0 y 100.';
+    msg.className = 'msg err'; return;
+  }
+  rounds.unshift({ score, putts, fir, gir, fecha, campo });
   save();
-  ['f-score','f-putts','f-fir','f-gir','f-campo'].forEach(id=>document.getElementById(id).value='');
-  msg.textContent='Ronda guardada correctamente.';msg.className='msg ok';
-  setTimeout(()=>msg.textContent='',2500);
+  ['f-score','f-putts','f-fir','f-gir','f-campo'].forEach(id => document.getElementById(id).value = '');
+  msg.textContent = 'Ronda guardada.';
+  msg.className = 'msg ok';
+  setTimeout(() => msg.textContent = '', 2500);
   updateHome();
 }
-function avg(key){if(!rounds.length)return null;return rounds.reduce((s,r)=>s+r[key],0)/rounds.length;}
-function updateHome(){
-  const n=rounds.length;
-  document.getElementById('h-rondas').textContent=n;
-  if(!n){['h-score','h-putts','h-fir'].forEach(id=>document.getElementById(id).textContent='-');document.getElementById('insight-body').innerHTML='Registra tu primera ronda para recibir analisis personalizado basado en tus datos reales.';return;}
-  const aScore=avg('score'),aPutts=avg('putts'),aFir=avg('fir');
-  const firPct=Math.round((aFir/14)*100);
-  document.getElementById('h-score').textContent=Math.round(aScore);
-  document.getElementById('h-putts').textContent=Math.round(aPutts);
-  document.getElementById('h-fir').textContent=firPct+'%';
-  if(n>=2){const diff=rounds[0].score-rounds[1].score;document.getElementById('h-score-trend').innerHTML=diff<0?`<span class="trend-dn">abajo ${Math.abs(diff)} vs anterior</span>`:`<span class="trend-up">arriba +${diff} vs anterior</span>`;}
-  let txt='';
-  if(firPct<45)txt=`Tu FIR de <strong>${firPct}%</strong> es la prioridad #1. Cada fairway perdido cuesta ~0.8 golpes extra. Dedica el 45% del tiempo al driver.`;
-  else if(Math.round(aPutts)>34)txt=`Promedias <strong>${Math.round(aPutts)} putts</strong> por ronda. Bajar a 32 puede quitarte 2 golpes sin tocar el swing.`;
-  else if(firPct>=58)txt=`Buen FIR de <strong>${firPct}%</strong>. Ahora el foco debe moverse a approach shots y GIR para seguir bajando el indice.`;
-  else txt=`Con FIR <strong>${firPct}%</strong> y ${Math.round(aPutts)} putts promedio, el driver sigue siendo la palanca mas importante. Mantén el plan actual.`;
-  document.getElementById('insight-body').innerHTML=txt;
+
+function avg(key) {
+  if (!rounds.length) return null;
+  return rounds.reduce((s, r) => s + r[key], 0) / rounds.length;
 }
-function renderStats(){
-  if(!rounds.length){document.getElementById('s-best-fir').textContent='-';document.getElementById('s-best-score').textContent='-';document.getElementById('rounds-list').innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Sin rondas registradas aun.</p></div>';return;}
-  document.getElementById('s-best-fir').textContent=Math.max(...rounds.map(r=>Math.round((r.fir/14)*100)))+'%';
-  document.getElementById('s-best-score').textContent=Math.min(...rounds.map(r=>r.score));
-  document.getElementById('rounds-list').innerHTML=rounds.map((r,i)=>`
-    <div class="round-item">
-      <div><div class="round-date">${r.fecha} - ${r.campo}</div><div class="round-score">${r.score}</div><div class="round-stats">FIR ${r.fir}/14 (${Math.round((r.fir/14)*100)}%) - ${r.putts} putts - GIR ${r.gir}/18</div></div>
-      <button class="del-btn" onclick="deleteRound(${i})"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>
+
+function updateHome() {
+  const n = rounds.length;
+  document.getElementById('h-rondas').textContent = n;
+  if (!n) {
+    ['h-score','h-putts','h-fir'].forEach(id => document.getElementById(id).textContent = '—');
+    document.getElementById('insight-body').innerHTML = 'Registra tu primera ronda para recibir analisis personalizado basado en tus datos reales.';
+    return;
+  }
+  const aScore = avg('score'), aPutts = avg('putts'), aFir = avg('fir');
+  document.getElementById('h-score').textContent = Math.round(aScore);
+  document.getElementById('h-putts').textContent = Math.round(aPutts);
+  document.getElementById('h-fir').textContent = Math.round(aFir) + '%';
+  if (n >= 2) {
+    const diff = rounds[0].score - rounds[1].score;
+    document.getElementById('h-trend').innerHTML = diff < 0
+      ? `<span class="trend-dn">↓ ${Math.abs(diff)} vs anterior</span>`
+      : `<span class="trend-up">↑ +${diff} vs anterior</span>`;
+  }
+  let txt = '';
+  const firR = Math.round(aFir), puttsR = Math.round(aPutts);
+  if (firR < 40) txt = `Tu FIR de <strong>${firR}%</strong> es la prioridad urgente. Menos de 40% significa que casi la mitad de los hoyos empiezas en desventaja. Dedica el 50% del tiempo al driver con enfoque en precision, no potencia.`;
+  else if (firR < 52) txt = `Con <strong>${firR}%</strong> de FIR estas por debajo del promedio para tu indice. Cada fairway adicional que encuentres equivale a ~0.8 golpes menos por ronda. El gate drill 3 veces por semana puede subir ese numero en 4 semanas.`;
+  else if (puttsR > 34) txt = `Tu FIR de <strong>${firR}%</strong> va bien. Ahora la oportunidad mas grande esta en los putts: promedias <strong>${puttsR}</strong> y bajar a 32 puede quitarte 2-3 golpes directos sin tocar el swing. Aumenta el tiempo en el putting green.`;
+  else if (firR >= 58) txt = `Excelente FIR de <strong>${firR}%</strong> y ${puttsR} putts promedio. Estas listo para atacar los approach shots. Subir el GIR del ${Math.round(avg('gir'))}% actual al 40%+ es la proxima palanca para bajar el indice.`;
+  else txt = `Con FIR <strong>${firR}%</strong> y ${puttsR} putts, el driver sigue siendo la palanca principal. Mantén la distribucion actual del plan y registra mas rondas para afinar el analisis.`;
+  document.getElementById('insight-body').innerHTML = txt;
+}
+
+function renderStats() {
+  if (!rounds.length) {
+    document.getElementById('s-best-fir').textContent = '—';
+    document.getElementById('s-best-score').textContent = '—';
+    document.getElementById('rounds-list').innerHTML = `<div class="empty"><svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Sin rondas registradas.<br>Ve a Ronda para agregar tu primera salida.</p></div>`;
+    return;
+  }
+  document.getElementById('s-best-fir').textContent = Math.max(...rounds.map(r => r.fir)) + '%';
+  document.getElementById('s-best-score').textContent = Math.min(...rounds.map(r => r.score));
+  document.getElementById('rounds-list').innerHTML = rounds.map((r, i) => `
+    <div class="round-card">
+      <div>
+        <div class="round-date">${r.fecha}</div>
+        <div class="round-score">${r.score}</div>
+        <div class="round-campo">${r.campo}</div>
+        <div class="round-stats">
+          <span class="round-stat-pill">FIR ${r.fir}%</span>
+          <span class="round-stat-pill">GIR ${r.gir}%</span>
+          <span class="round-stat-pill">${r.putts} putts</span>
+        </div>
+      </div>
+      <button class="del-btn" onclick="deleteRound(${i})" aria-label="Eliminar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+      </button>
     </div>`).join('');
 }
-function deleteRound(i){if(confirm('Eliminar esta ronda?')){rounds.splice(i,1);save();renderStats();updateHome();}}
-document.getElementById('f-fecha').value=new Date().toISOString().split('T')[0];
-renderPlan();updateHome();
+
+function deleteRound(i) {
+  if (confirm('Eliminar esta ronda?')) { rounds.splice(i, 1); save(); renderStats(); updateHome(); }
+}
+
+document.getElementById('f-fecha').value = new Date().toISOString().split('T')[0];
+renderPlan();
+updateHome();
 </script>
 </body>
 </html>
