@@ -456,13 +456,23 @@ function saveRound() {
 }
 
 // ── HOME ANALYSIS ──────────────────────────────────────────────────────────
-function avg(key) {
+// Normalize a round's values to 18-hole equivalents for analysis
+function normalize(r) {
+  const factor = (r.holes === 9) ? 2 : 1;
+  return {
+    score: r.score * factor,
+    putts: r.putts * factor,
+    fir: r.fir,   // already a percentage, no change needed
+    gir: r.gir    // already a percentage, no change needed
+  };
+}
+
+function avgNorm(key) {
   if (!rounds.length) return null;
-  return rounds.reduce((s, r) => s + r[key], 0) / rounds.length;
+  return rounds.reduce((s, r) => s + normalize(r)[key], 0) / rounds.length;
 }
 
 function updateHome() {
-  // Update HCP pill
   document.getElementById('hcp-display').textContent = hcp % 1 === 0 ? hcp : hcp.toFixed(1);
 
   const n = rounds.length;
@@ -474,22 +484,28 @@ function updateHome() {
     return;
   }
 
-  const aScore = avg('score'), aPutts = avg('putts'), aFir = avg('fir'), aGir = avg('gir');
+  // Use normalized (18-hole equivalent) values for all analysis
+  const aScore = avgNorm('score'), aPutts = avgNorm('putts'), aFir = avgNorm('fir'), aGir = avgNorm('gir');
   const firR = Math.round(aFir), puttsR = Math.round(aPutts), girR = Math.round(aGir);
   const scoreR = Math.round(aScore);
 
-  document.getElementById('h-score').textContent = scoreR;
-  document.getElementById('h-putts').textContent = puttsR;
+  document.getElementById('h-score').textContent = scoreR + (rounds.some(r => r.holes === 9) ? '*' : '');
+  document.getElementById('h-putts').textContent = puttsR + (rounds.some(r => r.holes === 9) ? '*' : '');
   document.getElementById('h-fir').textContent = firR + '%';
 
+  // Show asterisk note if mixed rounds
+  const hasMixed = rounds.some(r => r.holes === 9) && rounds.some(r => r.holes === 18 || !r.holes);
+  const hasOnly9 = rounds.every(r => r.holes === 9);
+  const normNote = (rounds.some(r => r.holes === 9)) ? ' <span style="font-size:10px;color:var(--text3)">(*equiv. 18h)</span>' : '';
+
   if (n >= 2) {
-    const r18 = rounds.filter(r => r.holes === 18 || !r.holes);
-    if (r18.length >= 2) {
-      const diff = r18[0].score - r18[1].score;
-      document.getElementById('h-trend').innerHTML = diff < 0
-        ? `<span class="trend-dn">↓ ${Math.abs(diff)} vs anterior</span>`
-        : diff > 0 ? `<span class="trend-up">↑ +${diff} vs anterior</span>` : '';
-    }
+    // Compare last two rounds of same type for trend
+    const norm0 = normalize(rounds[0]).score;
+    const norm1 = normalize(rounds[1]).score;
+    const diff = norm0 - norm1;
+    document.getElementById('h-trend').innerHTML = diff < 0
+      ? `<span class="trend-dn">↓ ${Math.abs(diff)} vs anterior</span>`
+      : diff > 0 ? `<span class="trend-up">↑ +${diff} vs anterior</span>` : '';
   }
 
   // ── DEEP ANALYSIS ────────────────────────────────────────────────────────
@@ -499,9 +515,10 @@ function updateHome() {
   const targetScore = Math.round(72 + hcp);
   const diff = scoreR - targetScore;
   let estadoTxt = '';
-  if (diff <= 0) estadoTxt = `Con un score promedio de <strong>${scoreR}</strong> y un indice <strong>${hcp}</strong>, estas jugando por encima de tu handicap. Excelente momento para atacar areas de mejora y acelerar la bajada.`;
-  else if (diff <= 4) estadoTxt = `Con score promedio de <strong>${scoreR}</strong>, estas a ${diff} golpes de tu handicap objetivo de ${targetScore}. Estas en la zona esperada para indice ${hcp}, pero con el trabajo correcto puedes cerrar esa brecha rapidamente.`;
-  else estadoTxt = `Tu score promedio de <strong>${scoreR}</strong> esta ${diff} golpes sobre tu handicap objetivo. Esto sugiere que hay areas tecnicas o de gestion del campo que estan costando golpes de forma sistematica.`;
+  const normLabel = rounds.some(r => r.holes === 9) ? ` (normalizado a equivalente 18 hoyos)` : '';
+  if (diff <= 0) estadoTxt = `Con un score promedio de <strong>${scoreR}</strong>${normLabel} y un indice <strong>${hcp}</strong>, estas jugando por encima de tu handicap. Excelente momento para atacar areas de mejora y acelerar la bajada.`;
+  else if (diff <= 4) estadoTxt = `Con score promedio de <strong>${scoreR}</strong>${normLabel}, estas a ${diff} golpes de tu handicap objetivo de ${targetScore}. Estas en la zona esperada para indice ${hcp}, pero con el trabajo correcto puedes cerrar esa brecha rapidamente.`;
+  else estadoTxt = `Tu score promedio de <strong>${scoreR}</strong>${normLabel} esta ${diff} golpes sobre tu handicap objetivo. Esto sugiere que hay areas tecnicas o de gestion del campo que estan costando golpes de forma sistematica.`;
   blocks.push({title:"Estado general", body: estadoTxt});
 
   // 2. DRIVER / TEE SHOTS
@@ -522,7 +539,6 @@ function updateHome() {
 
   // 4. PUTTING
   let puttTxt = '';
-  const puttBase = rounds.some(r => r.holes === 9) ? puttsR : puttsR;
   if (puttsR > 36) puttTxt = `Promedias <strong>${puttsR} putts</strong> por ronda, lo que representa un area de mejora inmediata. Con mas de 36 putts, probablemente estas teniendo multiples 3-putts por ronda. El problema casi siempre no es la linea sino la velocidad: los 3-putts nacen de lag putts que se pasan o se quedan muy cortos. Enfoca el 40% del tiempo de practica en putts desde 6-12 metros.`;
   else if (puttsR > 32) puttTxt = `Con <strong>${puttsR} putts</strong> promedio estas en zona aceptable para indice ${hcp}, pero bajar a 30-32 puede quitarte 2-4 golpes directos. La diferencia entre 34 y 32 putts esta casi siempre en los putts cortos de 1-2 metros que se fallan por falta de rutina o exceso de ansiedad.`;
   else puttTxt = `<strong>${puttsR} putts</strong> promedio es excelente. El putting ya no es tu limitante principal. Mantén la practica de rutina y enfoca la energia en las otras areas.`;
