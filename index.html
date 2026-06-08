@@ -25,7 +25,7 @@
       --blue:#1a4a7a;--blue-bg:#e8f0fb;
       --purple:#4a3a8a;--purple-bg:#f0eefb;
       --red:#c0392b;
-      --radius:16px;--radius-sm:10px;--radius-xs:6px;
+      --radius:16px;--radius-sm:10px;
       --shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.04);
       --shadow-sm:0 1px 2px rgba(0,0,0,0.06);
     }
@@ -49,10 +49,25 @@
 
     /* TOPBAR */
     .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:max(env(safe-area-inset-top),14px) 20px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-    .topbar-left{}
     .topbar-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);line-height:1}
     .topbar-sub{font-size:11px;color:var(--text3);margin-top:2px;letter-spacing:0.03em}
-    .hcp-pill{background:var(--green);color:#fff;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:500;letter-spacing:0.02em}
+    .hcp-pill{background:var(--green);color:#fff;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;transition:opacity 0.2s;letter-spacing:0.02em}
+    .hcp-pill:active{opacity:0.8}
+
+    /* MODAL */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
+    .modal-overlay.open{opacity:1;pointer-events:all}
+    .modal{background:var(--surface);border-radius:24px 24px 0 0;padding:24px 20px calc(24px + env(safe-area-inset-bottom,0px));width:100%;max-width:430px;transform:translateY(100%);transition:transform 0.3s cubic-bezier(0.32,0.72,0,1)}
+    .modal-overlay.open .modal{transform:translateY(0)}
+    .modal-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 20px}
+    .modal-title{font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:4px}
+    .modal-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
+    .modal-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+    .modal-label{font-size:13px;color:var(--text2);flex:1}
+    .hcp-stepper{display:flex;align-items:center;gap:0}
+    .hcp-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif}
+    .hcp-val{font-family:'DM Serif Display',serif;font-size:24px;width:56px;text-align:center}
+    .modal-btn{width:100%;padding:14px;background:var(--green);color:#fff;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:4px}
 
     /* CONTENT */
     .content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg)}
@@ -62,11 +77,11 @@
     /* BOTTOM NAV */
     .bottomnav{display:flex;border-top:1px solid var(--border);background:var(--surface);padding-bottom:env(safe-area-inset-bottom,0px);flex-shrink:0}
     .nav-btn{flex:1;padding:10px 4px 8px;font-size:10px;color:var(--text3);cursor:pointer;border:none;background:none;display:flex;flex-direction:column;align-items:center;gap:4px;transition:color 0.2s;letter-spacing:0.02em;font-family:'DM Sans',sans-serif}
-    .nav-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke-width 0.2s}
+    .nav-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
     .nav-btn.active{color:var(--green)}
     .nav-btn.active svg{stroke-width:2}
 
-    /* SECTION LABELS */
+    /* SECTIONS */
     .section-lbl{font-size:10px;font-weight:600;letter-spacing:0.1em;color:var(--text3);text-transform:uppercase;margin-bottom:10px;margin-top:22px}
     .section-lbl:first-child{margin-top:0}
 
@@ -80,12 +95,20 @@
     .trend-up{color:var(--red)}.trend-dn{color:var(--green2)}
 
     /* INSIGHT */
-    .insight-card{background:var(--green-light);border-radius:var(--radius);padding:14px 16px;margin-top:12px;border:1px solid rgba(26,107,74,0.12)}
-    .insight-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+    .insight-card{background:var(--green-light);border-radius:var(--radius);padding:16px;margin-top:12px;border:1px solid rgba(26,107,74,0.12)}
+    .insight-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
     .insight-header svg{width:16px;height:16px;stroke:var(--green2);fill:none;stroke-width:2;flex-shrink:0}
     .insight-header span{font-size:11px;font-weight:600;color:var(--green);letter-spacing:0.05em;text-transform:uppercase}
-    .insight-body{font-size:13px;color:var(--green-text);line-height:1.6}
-    .insight-body strong{font-weight:600}
+    .insight-block{margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(26,107,74,0.1)}
+    .insight-block:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+    .insight-block-title{font-size:12px;font-weight:600;color:var(--green);margin-bottom:4px}
+    .insight-block-body{font-size:13px;color:var(--green-text);line-height:1.65}
+    .insight-block-body strong{font-weight:600}
+
+    /* SEGMENT CONTROL */
+    .segment{display:flex;background:var(--bg2);border-radius:var(--radius-sm);padding:3px;margin-bottom:16px}
+    .seg-btn{flex:1;padding:8px;border:none;background:none;border-radius:8px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
+    .seg-btn.active{background:var(--surface);color:var(--text);box-shadow:var(--shadow-sm)}
 
     /* TIME CHIPS */
     .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
@@ -94,25 +117,27 @@
 
     /* PLAN CARDS */
     .plan-card{background:var(--surface);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border)}
-    .plan-hdr{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+    .plan-hdr{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
     .plan-hdr-left{display:flex;align-items:center;gap:10px}
     .plan-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .plan-icon svg{width:18px;height:18px;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-    .plan-meta{}
     .plan-name{font-size:14px;font-weight:500;color:var(--text)}
     .plan-prio{font-size:10px;color:var(--text3);margin-top:1px;letter-spacing:0.02em}
     .plan-mins{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);flex-shrink:0}
-    .plan-body{border-top:1px solid var(--border);overflow:hidden;transition:max-height 0.3s ease}
+    .plan-body{overflow:hidden;transition:max-height 0.35s ease}
     .plan-body.collapsed{max-height:0}
-    .plan-body.expanded{max-height:2000px}
-    .drill-item{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;gap:12px}
-    .drill-item:last-child{border-bottom:none}
-    .drill-illustration{width:56px;height:56px;flex-shrink:0;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;overflow:hidden}
-    .drill-illustration svg{width:48px;height:48px}
-    .drill-content{}
-    .drill-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
-    .drill-desc{font-size:12px;color:var(--text2);line-height:1.55}
-    .drill-reps{display:inline-block;margin-top:5px;font-size:10px;font-weight:600;letter-spacing:0.05em;color:var(--green);background:var(--green-light);padding:2px 8px;border-radius:20px}
+    .plan-body.expanded{max-height:4000px}
+    .chevron{transition:transform 0.25s;flex-shrink:0}
+
+    /* DRILL ITEMS */
+    .drill-item{padding:16px;border-top:1px solid var(--border)}
+    .drill-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+    .drill-reps{display:inline-block;font-size:10px;font-weight:600;letter-spacing:0.05em;color:var(--green);background:var(--green-light);padding:2px 8px;border-radius:20px;margin-bottom:10px}
+    .drill-desc{font-size:12px;color:var(--text2);line-height:1.65;margin-bottom:8px}
+    .drill-focus{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px}
+    .drill-focus-body{font-size:12px;color:var(--text2);line-height:1.55}
+    .drill-tip{background:var(--bg2);border-radius:8px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--text2);line-height:1.55;border-left:3px solid var(--green)}
+    .drill-tip strong{font-weight:600;color:var(--green-text)}
 
     /* FORM */
     .form-section{background:var(--surface);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow-sm);border:1px solid var(--border);margin-bottom:12px}
@@ -125,44 +150,62 @@
     input[type=number],input[type=date],input[type=text]{width:100%;padding:11px 14px;font-size:16px;border:1px solid var(--border2);border-radius:var(--radius-sm);background:var(--bg2);color:var(--text);-webkit-appearance:none;outline:none;transition:border-color 0.2s;font-family:'DM Sans',sans-serif}
     input[type=number].has-suffix{padding-right:36px}
     input:focus{border-color:var(--green);background:var(--surface)}
-    .save-btn{width:100%;padding:15px;background:var(--green);color:#fff;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:500;cursor:pointer;margin-top:4px;font-family:'DM Sans',sans-serif;letter-spacing:0.01em;transition:opacity 0.2s}
+    .save-btn{width:100%;padding:15px;background:var(--green);color:#fff;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:500;cursor:pointer;margin-top:4px;font-family:'DM Sans',sans-serif;transition:opacity 0.2s}
     .save-btn:active{opacity:0.8}
     .msg{font-size:12px;text-align:center;margin-top:10px;min-height:16px}
     .msg.ok{color:var(--green2)}.msg.err{color:var(--red)}
 
     /* HISTORY */
     .round-card{background:var(--surface);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-start;box-shadow:var(--shadow-sm);border:1px solid var(--border)}
-    .round-date{font-size:11px;color:var(--text3);margin-bottom:4px;letter-spacing:0.02em}
+    .round-date{font-size:11px;color:var(--text3);margin-bottom:4px}
+    .round-score-row{display:flex;align-items:baseline;gap:8px}
     .round-score{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text);line-height:1}
+    .round-holes{font-size:11px;color:var(--text3)}
     .round-campo{font-size:12px;color:var(--text2);margin-top:2px}
-    .round-stats{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
-    .round-stat-pill{font-size:11px;background:var(--bg2);border-radius:20px;padding:3px 10px;color:var(--text2)}
-    .del-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;flex-shrink:0;margin-top:2px}
+    .round-stats{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+    .round-pill{font-size:11px;background:var(--bg2);border-radius:20px;padding:3px 10px;color:var(--text2)}
+    .del-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;flex-shrink:0}
 
     /* RECORDS */
     .record-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-
-    /* EMPTY */
     .empty{text-align:center;padding:48px 20px;color:var(--text3)}
-    .empty-icon{width:48px;height:48px;margin:0 auto 12px;opacity:0.3}
+    .empty-icon{width:48px;height:48px;margin:0 auto 12px;opacity:0.3;display:block}
     .empty p{font-size:13px;line-height:1.5}
   </style>
 </head>
 <body>
 <div class="app">
   <div class="topbar">
-    <div class="topbar-left">
+    <div>
       <div class="topbar-title">Golf Coach</div>
       <div class="topbar-sub">Entrenador personal</div>
     </div>
-    <div class="hcp-pill">HCP 12</div>
+    <div class="hcp-pill" id="hcp-pill" onclick="openHcpModal()">HCP <span id="hcp-display">12</span></div>
+  </div>
+
+  <!-- HCP MODAL -->
+  <div class="modal-overlay" id="hcp-modal" onclick="closeHcpModal(event)">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <div class="modal-title">Actualizar handicap</div>
+      <div class="modal-sub">Ajusta tu indice actual para personalizar el analisis.</div>
+      <div class="modal-row">
+        <div class="modal-label">Indice actual</div>
+        <div class="hcp-stepper">
+          <button class="hcp-btn" onclick="adjustHcp(-0.1)">−</button>
+          <div class="hcp-val" id="hcp-modal-val">12.0</div>
+          <button class="hcp-btn" onclick="adjustHcp(0.1)">+</button>
+        </div>
+      </div>
+      <button class="modal-btn" onclick="saveHcp()">Guardar</button>
+    </div>
   </div>
 
   <div class="content">
 
     <!-- HOME -->
     <div id="page-home" class="page active">
-      <div class="section-lbl">Esta semana</div>
+      <div class="section-lbl">Resumen</div>
       <div class="stat-grid">
         <div class="stat-card"><div class="stat-lbl">Rondas</div><div class="stat-val" id="h-rondas">0</div><div class="stat-sub">registradas</div></div>
         <div class="stat-card"><div class="stat-lbl">Score prom.</div><div class="stat-val" id="h-score">—</div><div class="stat-trend" id="h-trend"></div></div>
@@ -174,13 +217,17 @@
           <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/><line x1="9" y1="21" x2="15" y2="21"/></svg>
           <span>Analisis del coach</span>
         </div>
-        <div class="insight-body" id="insight-body">Registra tu primera ronda para recibir analisis personalizado basado en tus datos reales.</div>
+        <div id="insight-body"><div class="insight-block"><div class="insight-block-body">Registra tu primera ronda para recibir analisis personalizado basado en tus datos reales.</div></div></div>
       </div>
     </div>
 
     <!-- REGISTRO -->
     <div id="page-registro" class="page">
-      <div class="section-lbl">Nueva ronda</div>
+      <div class="section-lbl">Tipo de ronda</div>
+      <div class="segment">
+        <button class="seg-btn" id="seg-9" onclick="setHoles(9)">9 hoyos</button>
+        <button class="seg-btn active" id="seg-18" onclick="setHoles(18)">18 hoyos</button>
+      </div>
       <div class="form-section">
         <div class="form-group">
           <label class="form-label">Fecha</label>
@@ -189,11 +236,11 @@
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Score total</label>
-            <input type="number" id="f-score" placeholder="87" min="30" max="130">
+            <input type="number" id="f-score" placeholder="87" min="25" max="130">
           </div>
           <div class="form-group">
             <label class="form-label">Putts totales</label>
-            <input type="number" id="f-putts" placeholder="34" min="10" max="60">
+            <input type="number" id="f-putts" placeholder="34" min="9" max="60">
           </div>
         </div>
         <div class="form-row">
@@ -236,7 +283,7 @@
 
     <!-- STATS -->
     <div id="page-stats" class="page">
-      <div class="section-lbl">Records personales</div>
+      <div class="section-lbl">Records</div>
       <div class="record-row">
         <div class="stat-card"><div class="stat-lbl">Mejor FIR</div><div class="stat-val" id="s-best-fir">—</div></div>
         <div class="stat-card"><div class="stat-lbl">Mejor score</div><div class="stat-val" id="s-best-score">—</div></div>
@@ -264,217 +311,39 @@
 </div>
 
 <script>
-// ── SVG ILLUSTRATIONS ──────────────────────────────────────────────────────
-const ILLUS = {
-  address: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="24" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
-    <line x1="24" y1="12" x2="24" y2="26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="16" y1="18" x2="24" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="24" y1="26" x2="18" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="24" y1="26" x2="30" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="16" y1="18" x2="32" y2="22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    <circle cx="33" cy="22" r="2.5" stroke="currentColor" stroke-width="1.5"/>
-    <path d="M14 42 Q24 38 34 42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.3"/>
-  </svg>`,
-
-  gate: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="24" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
-    <line x1="24" y1="12" x2="24" y2="26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="17" y1="17" x2="24" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="24" y1="26" x2="19" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="24" y1="26" x2="29" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="17" y1="17" x2="34" y2="22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    <line x1="30" y1="28" x2="30" y2="36" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-    <line x1="36" y1="28" x2="36" y2="36" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-    <path d="M28 24 Q32 22 38 24" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2" fill="none" opacity="0.5"/>
-    <circle cx="35" cy="22" r="2" stroke="currentColor" stroke-width="1.5"/>
-  </svg>`,
-
-  putting_short: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="24" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
-    <line x1="24" y1="12" x2="24" y2="28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="18" y1="20" x2="24" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="24" y1="28" x2="20" y2="38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="24" y1="28" x2="28" y2="38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="18" y1="20" x2="30" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    <circle cx="8" cy="40" r="2.5" fill="currentColor" opacity="0.7"/>
-    <circle cx="16" cy="40" r="2.5" stroke="currentColor" stroke-width="1.2" opacity="0.4"/>
-    <circle cx="24" cy="40" r="2.5" stroke="currentColor" stroke-width="1.2" opacity="0.4"/>
-    <path d="M6 40 Q15 36 26 40" stroke="currentColor" stroke-width="1" fill="none" opacity="0.2"/>
-  </svg>`,
-
-  putting_lag: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="24" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
-    <line x1="24" y1="12" x2="24" y2="28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="18" y1="20" x2="24" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="24" y1="28" x2="20" y2="38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="24" y1="28" x2="28" y2="38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="18" y1="20" x2="30" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    <circle cx="44" cy="40" r="2.5" fill="currentColor" opacity="0.5"/>
-    <path d="M28 39 Q36 36 44 39" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2" fill="none" opacity="0.5"/>
-    <line x1="28" y1="38" x2="28" y2="42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
-  </svg>`,
-
-  chipping: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="18" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
-    <line x1="18" y1="12" x2="16" y2="26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="12" y1="18" x2="18" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="16" y1="26" x2="11" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="16" y1="26" x2="22" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="12" y1="18" x2="26" y2="28" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    <path d="M26 28 Q32 20 40 30" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2" fill="none" opacity="0.6"/>
-    <circle cx="40" cy="31" r="2.5" fill="currentColor" opacity="0.6"/>
-    <path d="M8 42 L44 42" stroke="currentColor" stroke-width="1" opacity="0.2"/>
-    <path d="M34 42 Q37 38 40 42" stroke="currentColor" stroke-width="1.2" fill="none" opacity="0.4"/>
-  </svg>`,
-
-  bunker: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="18" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
-    <line x1="18" y1="12" x2="16" y2="26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="11" y1="17" x2="18" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="16" y1="26" x2="11" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="16" y1="26" x2="22" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="11" y1="17" x2="28" y2="28" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    <path d="M8 44 Q18 36 36 40 Q40 41 44 44" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.5"/>
-    <path d="M28 40 Q32 37 36 39" stroke="currentColor" stroke-width="1" fill="currentColor" fill-opacity="0.1" opacity="0.6"/>
-    <circle cx="30" cy="38" r="2" fill="currentColor" opacity="0.4"/>
-  </svg>`,
-
-  pitch: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="16" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
-    <line x1="16" y1="12" x2="14" y2="26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="9" y1="17" x2="16" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="14" y1="26" x2="10" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="14" y1="26" x2="20" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="9" y1="17" x2="26" y2="28" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    <path d="M26 28 Q30 16 40 26" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2" fill="none" opacity="0.6"/>
-    <circle cx="40" cy="27" r="2.5" fill="currentColor" opacity="0.5"/>
-    <line x1="38" y1="27" x2="38" y2="42" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" opacity="0.3"/>
-    <path d="M6 42 L44 42" stroke="currentColor" stroke-width="1" opacity="0.2"/>
-  </svg>`,
-
-  iron: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="24" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
-    <line x1="24" y1="11" x2="24" y2="26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="16" y1="17" x2="24" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="24" y1="26" x2="19" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="24" y1="26" x2="29" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="16" y1="17" x2="34" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    <circle cx="35" cy="24" r="2.5" stroke="currentColor" stroke-width="1.5"/>
-    <path d="M30 42 L44 42" stroke="currentColor" stroke-width="2" opacity="0.3"/>
-    <circle cx="40" cy="42" r="3" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-  </svg>`,
-
-  mental: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="24" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
-    <line x1="24" y1="12" x2="24" y2="26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="17" y1="18" x2="24" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="24" y1="26" x2="19" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="24" y1="26" x2="29" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <path d="M32 10 Q38 8 36 14 Q34 18 30 16" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <circle cx="34" cy="9" r="1.5" fill="currentColor" opacity="0.5"/>
-    <path d="M36 18 L37 22" stroke="currentColor" stroke-width="1.2" opacity="0.4" stroke-linecap="round"/>
-  </svg>`
-};
-
-// ── PLAN DATA ──────────────────────────────────────────────────────────────
-const PLANS = {
-  60:[
-    {name:"Driver / Precision",icon:"coral",prio:"Alta",color:"var(--coral)",bg:"var(--coral-bg)",mins:30,drills:[
-      {name:"Swing al 80%",icon:"address",reps:"10 pelotas",desc:"Coloca un alignment stick en el suelo apuntando al target. Realiza el swing con un ritmo relajado, al 80% de tu maxima velocidad. El objetivo es contacto limpio y direccion, no distancia. Siente como el cuerpo rota completamente hacia el target en el follow-through."},
-      {name:"Gate Drill",icon:"gate",reps:"10 reps",desc:"Coloca dos tees en el suelo formando una puerta de unos 30cm de ancho, justo delante de la pelota. El objetivo es pasar el driver por la puerta sin tocar los tees. Este drill te fuerza a trazar una trayectoria de dentro hacia afuera, corrigiendo el slice."}
-    ]},
-    {name:"Putting",icon:"green",prio:"Base",color:"var(--green)",bg:"var(--green-light)",mins:20,drills:[
-      {name:"Circulo de 1.5m",icon:"putting_short",reps:"3 rondas",desc:"Coloca 6 pelotas en circulo alrededor del hoyo a 1.5 metros. El reto es embocar las 6 consecutivas sin fallar. Si fallas, empiezas desde cero. Este drill desarrolla la concentracion y la confianza en putts cortos bajo presion."},
-      {name:"Lag Putting",icon:"putting_lag",reps:"5 pelotas",desc:"Desde 8 metros, el objetivo no es embocar sino dejar la pelota dentro de un circulo imaginario de 60cm alrededor del hoyo. El enfoque esta en el ritmo y en calibrar la fuerza, los dos factores que mas afectan el numero de putts por ronda."}
-    ]}
-  ],
-  180:[
-    {name:"Driver / Precision",icon:"coral",prio:"Alta",color:"var(--coral)",bg:"var(--coral-bg)",mins:75,drills:[
-      {name:"Gate Drill",icon:"gate",reps:"20 reps",desc:"Coloca dos tees formando una puerta de 30cm justo delante de la pelota. Pasa el driver por la puerta en cada swing. Alterna entre intentar un draw suave y un fade suave. Este drill desarrolla control de path y face angle, las dos variables clave para encontrar el fairway."},
-      {name:"Swing con alignment stick",icon:"address",reps:"20 reps",desc:"Coloca un alignment stick en el suelo apuntando al target y otro paralelo para alinear los pies. Con cada swing, enfocate en que el cuerpo quede completamente girado hacia el target al terminar. La clave es la consistencia del finish, no la distancia."},
-      {name:"10 pelotas con target",icon:"gate",reps:"10 pelotas",desc:"Elige un target especifico en el rango, como un cartel o un area delimitada. Antes de cada pelota, ejecuta tu rutina pre-shot completa: alineacion, un practice swing, visualizacion. Esto entrena el proceso de juego real, no solo el swing mecanico."}
-    ]},
-    {name:"Juego corto",icon:"amber",prio:"Media",color:"var(--amber)",bg:"var(--amber-bg)",mins:60,drills:[
-      {name:"Chipping desde rough",icon:"chipping",reps:"20 pelotas",desc:"Practica chips desde mentada del rough, donde el lie es mas dificil. Usa el SW o LW con un stance estrecho y las manos adelantadas. El objetivo es salir limpio y controlar la distancia. Alterna entre lies buenos y malos para simular el campo real."},
-      {name:"Ejercicio de bunker",icon:"bunker",reps:"15 salidas",desc:"En el bunker, dibuja una linea en la arena y practica golpear exactamente 5cm detras de esa linea. La arena lanzara la pelota sin que el club la toque directamente. Varia la apertura de la cara entre shots para entender como cambia la trayectoria y el spin."},
-      {name:"Up and Down",icon:"chipping",reps:"10 situaciones",desc:"Crea 10 situaciones distintas alrededor del green: lies diferentes, distancias variadas, con y sin obstaculos. Para cada una, el objetivo es necesitar maximo 2 golpes para embocar (un chip o pitch + un putt). Lleva el conteo de cuantos up and downs logras."}
-    ]},
-    {name:"Putting",icon:"green",prio:"Base",color:"var(--green)",bg:"var(--green-light)",mins:45,drills:[
-      {name:"Serie 1m-3m-5m",icon:"putting_short",reps:"5 rondas",desc:"Empieza con un putt de 1m, si lo embocar mueve a 3m, si lo embocar mueve a 5m. Si fallas en cualquier distancia vuelves al principio. El objetivo es completar las 5 rondas completas. Desarrolla ritmo progresivo y confianza en distancias variadas."},
-      {name:"Lag desde 10m",icon:"putting_lag",reps:"10 pelotas",desc:"Putts largos desde 10 metros con un solo objetivo: que la pelota pare dentro de un circulo de 60cm. No intentes embocar, solo calibra la fuerza. Los 3-putts en rondas reales casi siempre vienen de una mala lectura de distancia, no de la linea."}
-    ]}
-  ],
-  240:[
-    {name:"Driver / Precision",icon:"coral",prio:"Alta",color:"var(--coral)",bg:"var(--coral-bg)",mins:90,drills:[
-      {name:"Gate Drill intensivo",icon:"gate",reps:"30 reps",desc:"Coloca dos tees formando una puerta de 30cm. Divide las 30 repeticiones en 3 series: 10 buscando draw, 10 buscando fade y 10 rectas. Entre series descansa 2 minutos. Este patron de entrenamiento bloquea la mejora tecnica y acelera el aprendizaje motor."},
-      {name:"10 draw + 10 fade",icon:"address",reps:"20 pelotas",desc:"Con el driver, alterna intenciones: un shot buscando vuelo de derecha a izquierda (draw) y el siguiente de izquierda a derecha (fade). No importa si no sale perfecto, lo que entrenas es la capacidad de influir conscientemente en la curva del vuelo."},
-      {name:"Simulacion de 9 tee shots",icon:"gate",reps:"9 hoyos",desc:"Imagina los primeros 9 hoyos de tu campo habitual. Para cada uno, elige el club y la estrategia, ejecuta el shot y anota si lo hubieras encontrado en fairway. Esta es la forma mas eficiente de entrenar la toma de decisiones y el course management desde el tee."},
-      {name:"Analisis de video",icon:"address",reps:"5 swings",desc:"Graba 5 swings con el telefono desde atras (linea de vuelo). Compara tu path, posicion de las manos en el impacto y finish. No necesitas saber de biomecania, solo busca consistencia: que los 5 swings luzcan similares entre si."}
-    ]},
-    {name:"Juego corto",icon:"amber",prio:"Media",color:"var(--amber)",bg:"var(--amber-bg)",mins:75,drills:[
-      {name:"Chipping variado",icon:"chipping",reps:"30 pelotas",desc:"Practica chips desde rough, fairway y fringe. Para cada lie, ajusta el setup: stance mas estrecho para shots de bajo vuelo, mas abierto para shots altos. El objetivo es desarrollar criterio para elegir el chip correcto segun la situacion."},
-      {name:"Bunker con variaciones",icon:"bunker",reps:"20 salidas",desc:"Divide en 4 series de 5: lie plano, lie enterrado, lie cuesta arriba y lie cuesta abajo. Para cada uno ajusta la apertura de la cara y el punto de entrada en la arena. El objetivo es salir de cualquier bunker en maximo 2 golpes."},
-      {name:"Pitch de distancia",icon:"pitch",reps:"30-60 yds",desc:"Practica pitch shots desde 30, 45 y 60 yardas. Para cada distancia, usa la misma longitud de swing y varia la velocidad. Intenta dejar cada pelota dentro de un circulo de 3 metros del hoyo. Los pitch shots controlados son los que mas strokes ganan alrededor del green."}
-    ]},
-    {name:"Putting",icon:"green",prio:"Base",color:"var(--green)",bg:"var(--green-light)",mins:45,drills:[
-      {name:"Rutina 1m a 6m",icon:"putting_short",reps:"Sin fallar",desc:"Empieza desde 1 metro y completa una ronda sin fallar antes de avanzar 50cm. El objetivo es llegar a 6 metros. Si fallas en cualquier punto, vuelves a 1 metro. Este drill construye confianza progresiva y enseña a mantener la concentracion bajo presion."},
-      {name:"10 consecutivos desde 1m",icon:"putting_short",reps:"10 seguidos",desc:"Pon 10 pelotas en fila a 1 metro del hoyo. Debes embocarlas todas seguidas. Si fallas en el putt 8, empiezas desde cero. Puede parecer facil pero bajo presion muchos jugadores fallan estos putts en el campo. Aqui los entrenamos bajo presion real."},
-      {name:"Lag desde 12m",icon:"putting_lag",reps:"10 pelotas",desc:"Desde 12 metros, el objetivo es dejar la pelota maximo a 60cm del hoyo con un solo putt. Lleva el conteo: cuantos de los 10 cumplen el objetivo. Un buen score es 7 de 10. Si logras 9 de 10, aumenta la distancia a 15 metros."}
-    ]},
-    {name:"Rutina mental",icon:"purple",prio:"Base",color:"var(--purple)",bg:"var(--purple-bg)",mins:30,drills:[
-      {name:"Pre-shot routine",icon:"mental",reps:"20 reps",desc:"Define tu rutina en 3 pasos: (1) parate detras de la pelota y visualiza el shot, (2) alineate al target, (3) un practice swing y ejecuta. Cronometra que toda la rutina tome entre 15-20 segundos. La consistencia del tiempo es tan importante como los pasos."},
-      {name:"Course management",icon:"mental",reps:"9 hoyos",desc:"Con papel y lapiz, diseña el juego ideal en 9 hoyos de tu campo. Para cada hoyo decide: que club en el tee, donde quieres dejar la pelota, cuanto te permite fallar. Esto entrena el pensamiento estrategico que diferencia a un jugador de indice 12 de uno de indice 8."}
-    ]}
-  ],
-  300:[
-    {name:"Driver / Precision",icon:"coral",prio:"Alta",color:"var(--coral)",bg:"var(--coral-bg)",mins:100,drills:[
-      {name:"Gate Drill 40 reps",icon:"gate",reps:"40 reps",desc:"La sesion mas completa del gate drill. Divide en 4 series de 10: draw, fade, rectas con objetivo izquierdo y rectas con objetivo derecho. Este volumen alto de repeticiones crea memoria muscular real. Descansa 90 segundos entre series."},
-      {name:"Simulacion competitiva",icon:"address",reps:"18 tee shots",desc:"Imagina los 18 hoyos de tu campo. Para cada hoyo anota la decision de club, ejecuta el shot y registra si seria fairway o rough. Al final tienes tu FIR simulado. Compara este numero con tu FIR real en The Grint para ver si el problema es decision o ejecucion."},
-      {name:"Draw-Fade-Recta",icon:"gate",reps:"30 pelotas",desc:"10 draws, 10 fades, 10 rectas. Para el draw: cierra levemente la stance y siente las manos girando en el impacto. Para el fade: abre levemente la stance y mantén la cara cuadrada. Para la recta: alignment stick en el suelo y foco en un target lejano."},
-      {name:"Analisis de video",icon:"address",reps:"5 swings",desc:"Graba desde atras y desde el lado. Busca que el path del club en la bajada pase por dentro de la linea de vuelo. Un path de afuera hacia adentro genera el slice que te cuesta fairways. Compara con tu swing ideal y busca 1 sola cosa para mejorar en la sesion."}
-    ]},
-    {name:"Juego corto",icon:"amber",prio:"Media",color:"var(--amber)",bg:"var(--amber-bg)",mins:90,drills:[
-      {name:"Chipping 40 pelotas",icon:"chipping",reps:"40 pelotas",desc:"La sesion de mayor volumen en juego corto. Divide por situaciones: 10 desde fairway, 10 desde rough corto, 10 desde rough largo y 10 desde fringe. Para cada grupo anota cuantos dejas a menos de 1.5 metros del hoyo. El benchmark es 6 de 10 en cada grupo."},
-      {name:"Bunker avanzado",icon:"bunker",reps:"25 salidas",desc:"5 salidas normales, 5 con la pelota enterrada, 5 cuesta arriba, 5 cuesta abajo y 5 con el objetivo a menos de 5 metros. El ultimo grupo es el mas dificil porque requires tanto altura como poca distancia. Aqui es donde muchos jugadores de indice 12 regalan golpes."},
-      {name:"Pitch de yardaje exacto",icon:"pitch",reps:"40-80 yds",desc:"Pon un marcador en el suelo a 40, 50, 60, 70 y 80 yardas. El objetivo es caer dentro de 2 metros del marcador. Para cada distancia usa el mismo club (SW o AW) y ajusta solo el largo del swing. Lleva el registro de precision por distancia."}
-    ]},
-    {name:"Putting",icon:"green",prio:"Base",color:"var(--green)",bg:"var(--green-light)",mins:60,drills:[
-      {name:"9 hoyos competitivo",icon:"putting_short",reps:"9 hoyos",desc:"Juega 9 hoyos de putting con score real. En cada hoyo, un 2 es par y un 3 es bogey. El objetivo es terminar en 18 o menos (par). Llevar score hace que cada putt importe, replicando la presion del campo real. Registra tu score y busca mejorarlo en cada sesion."},
-      {name:"Lag desde 15m",icon:"putting_lag",reps:"10 pelotas",desc:"La distancia mas larga del programa. Desde 15 metros, el objetivo es dejar la pelota a menos de 80cm. A esta distancia la velocidad es mucho mas importante que la linea. Practica solo pensar en la fuerza necesaria, sin preocuparte de donde apuntas exactamente."},
-      {name:"Putting con un ojo tapado",icon:"putting_short",reps:"20 putts",desc:"Tapa tu ojo no dominante (derecho si eres diestro). Esto fuerza al cerebro a leer la linea con mas precision y desarrolla la vision de profundidad en el putting. Muchos coaches usan este drill para corregir problemas de alineacion que son dificiles de ver a simple vista."}
-    ]},
-    {name:"Irons y approach",icon:"blue",prio:"Media",color:"var(--blue)",bg:"var(--blue-bg)",mins:30,drills:[
-      {name:"10 pelotas por hierro",icon:"iron",reps:"3 hierros",desc:"Elige el 7, el 9 y el PW. Para cada uno, 10 pelotas con un target especifico. El objetivo no es la distancia sino impactar el centro de la cara consistentemente. Un contacto limpio con el 7 llega siempre mas lejos que un contacto impuro con el 5."},
-      {name:"GIR desde 150 yds",icon:"iron",reps:"10 pelotas",desc:"Desde 150 yardas, el objetivo es el centro del green, no la bandera. Un GIR desde 150 metros que termina a 10 metros del hoyo es un exito. El error mas comun en handicaps 12 es intentar la bandera en lugar del centro del green, generando bogeys dobles innecesarios."}
-    ]},
-    {name:"Rutina mental",icon:"purple",prio:"Base",color:"var(--purple)",bg:"var(--purple-bg)",mins:20,drills:[
-      {name:"Pre-shot routine",icon:"mental",reps:"20 reps",desc:"Ejecuta tu rutina completa en cada shot de la sesion. No solo en los shots dificiles. La rutina debe ser identica en el rango que en el campo. Si tardas 18 segundos en el campo, debes tardar 18 segundos en el rango. La consistencia de la rutina predice la consistencia del swing."},
-      {name:"Course management 18",icon:"mental",reps:"18 hoyos",desc:"Diseña el juego ideal en los 18 hoyos de tu campo. Para cada hoyo establece: (1) club del tee y zona objetivo, (2) zona de approach preferida, (3) que parte del green atacar segun la posicion de la bandera. Este ejercicio puede quitarte 3-5 golpes sin mejorar el swing."}
-    ]}
-  ]
-};
-
-const COLOR_MAP = {
-  coral:{color:"var(--coral)",bg:"var(--coral-bg)"},
-  amber:{color:"var(--amber)",bg:"var(--amber-bg)"},
-  green:{color:"var(--green)",bg:"var(--green-light)"},
-  purple:{color:"var(--purple)",bg:"var(--purple-bg)"},
-  blue:{color:"var(--blue)",bg:"var(--blue-bg)"}
-};
-
-const PRIO_COLOR = {
-  "Alta":"var(--coral)",
-  "Media":"var(--amber)",
-  "Base":"var(--green)"
-};
-
-let rounds = JSON.parse(localStorage.getItem('golf-rounds-v2') || '[]');
+// ── STATE ──────────────────────────────────────────────────────────────────
+let rounds = JSON.parse(localStorage.getItem('golf-rounds-v3') || '[]');
+let hcp = parseFloat(localStorage.getItem('golf-hcp') || '12');
 let planTime = 180;
+let holesMode = 18;
 let expandedCards = {};
+let hcpTemp = hcp;
 
-function save() { localStorage.setItem('golf-rounds-v2', JSON.stringify(rounds)); }
+function save() { localStorage.setItem('golf-rounds-v3', JSON.stringify(rounds)); }
+function saveHcpStore() { localStorage.setItem('golf-hcp', hcp.toString()); }
 
+// ── HCP MODAL ──────────────────────────────────────────────────────────────
+function openHcpModal() {
+  hcpTemp = hcp;
+  document.getElementById('hcp-modal-val').textContent = hcpTemp.toFixed(1);
+  document.getElementById('hcp-modal').classList.add('open');
+}
+function closeHcpModal(e) {
+  if (e.target === document.getElementById('hcp-modal')) document.getElementById('hcp-modal').classList.remove('open');
+}
+function adjustHcp(delta) {
+  hcpTemp = Math.max(0, Math.min(36, Math.round((hcpTemp + delta) * 10) / 10));
+  document.getElementById('hcp-modal-val').textContent = hcpTemp.toFixed(1);
+}
+function saveHcp() {
+  hcp = hcpTemp;
+  saveHcpStore();
+  document.getElementById('hcp-display').textContent = hcp % 1 === 0 ? hcp : hcp.toFixed(1);
+  document.getElementById('hcp-modal').classList.remove('open');
+  updateHome();
+}
+
+// ── NAVIGATION ─────────────────────────────────────────────────────────────
 function showPage(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -484,6 +353,16 @@ function showPage(id, btn) {
   if (id === 'home') updateHome();
 }
 
+// ── HOLES TOGGLE ───────────────────────────────────────────────────────────
+function setHoles(n) {
+  holesMode = n;
+  document.getElementById('seg-9').classList.toggle('active', n === 9);
+  document.getElementById('seg-18').classList.toggle('active', n === 18);
+  document.getElementById('f-score').placeholder = n === 9 ? '44' : '87';
+  document.getElementById('f-putts').placeholder = n === 9 ? '17' : '34';
+}
+
+// ── PLAN ───────────────────────────────────────────────────────────────────
 function setTime(t, el) {
   planTime = t;
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
@@ -495,56 +374,62 @@ function setTime(t, el) {
 function toggleCard(idx) {
   expandedCards[idx] = !expandedCards[idx];
   const body = document.getElementById('drill-body-' + idx);
+  const chev = document.getElementById('chev-' + idx);
   if (expandedCards[idx]) {
-    body.classList.remove('collapsed');
-    body.classList.add('expanded');
+    body.classList.remove('collapsed'); body.classList.add('expanded');
+    chev.style.transform = 'rotate(180deg)';
   } else {
-    body.classList.remove('expanded');
-    body.classList.add('collapsed');
+    body.classList.remove('expanded'); body.classList.add('collapsed');
+    chev.style.transform = 'rotate(0deg)';
   }
 }
+
+const COLOR_MAP = {
+  coral:{color:"var(--coral)",bg:"var(--coral-bg)"},
+  amber:{color:"var(--amber)",bg:"var(--amber-bg)"},
+  green:{color:"var(--green)",bg:"var(--green-light)"},
+  purple:{color:"var(--purple)",bg:"var(--purple-bg)"},
+  blue:{color:"var(--blue)",bg:"var(--blue-bg)"}
+};
+const PRIO_COLOR = {"Alta":"var(--coral)","Media":"var(--amber)","Base":"var(--green)"};
 
 function renderPlan() {
   const data = PLANS[planTime];
   document.getElementById('plan-cards').innerHTML = data.map((d, i) => {
     const cm = COLOR_MAP[d.icon] || COLOR_MAP.green;
-    const isOpen = expandedCards[i];
     return `
     <div class="plan-card">
       <div class="plan-hdr" onclick="toggleCard(${i})">
         <div class="plan-hdr-left">
           <div class="plan-icon" style="background:${cm.bg}">
-            <svg viewBox="0 0 24 24" style="stroke:${cm.color}">
-              <circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
-              <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
-              <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
-            </svg>
+            <svg viewBox="0 0 24 24" style="stroke:${cm.color}"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
           </div>
-          <div class="plan-meta">
+          <div>
             <div class="plan-name">${d.name}</div>
             <div class="plan-prio" style="color:${PRIO_COLOR[d.prio]}">${d.prio} · ${d.drills.length} ejercicios</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <div class="plan-mins">${d.mins}m</div>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2" stroke-linecap="round" style="transition:transform 0.2s;transform:rotate(${isOpen?'180deg':'0deg'})"><polyline points="6 9 12 15 18 9"/></svg>
+          <svg id="chev-${i}" class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
       </div>
-      <div class="plan-body ${isOpen ? 'expanded' : 'collapsed'}" id="drill-body-${i}">
+      <div class="plan-body collapsed" id="drill-body-${i}">
         ${d.drills.map(dr => `
           <div class="drill-item">
-            <div class="drill-illustration" style="color:${cm.color}">${ILLUS[dr.icon] || ILLUS.address}</div>
-            <div class="drill-content">
-              <div class="drill-name">${dr.name}</div>
-              <div class="drill-desc">${dr.desc}</div>
-              <span class="drill-reps">${dr.reps}</span>
-            </div>
+            <div class="drill-name">${dr.name}</div>
+            <span class="drill-reps">${dr.reps}</span>
+            <div class="drill-desc">${dr.desc}</div>
+            <div class="drill-focus">Foco tecnico</div>
+            <div class="drill-focus-body">${dr.focus}</div>
+            <div class="drill-tip"><strong>Tip del coach:</strong> ${dr.tip}</div>
           </div>`).join('')}
       </div>
     </div>`;
   }).join('');
 }
 
+// ── SAVE ROUND ─────────────────────────────────────────────────────────────
 function saveRound() {
   const score = parseInt(document.getElementById('f-score').value);
   const putts = parseInt(document.getElementById('f-putts').value);
@@ -561,48 +446,105 @@ function saveRound() {
     msg.textContent = 'FIR y GIR deben ser entre 0 y 100.';
     msg.className = 'msg err'; return;
   }
-  rounds.unshift({ score, putts, fir, gir, fecha, campo });
+  rounds.unshift({ score, putts, fir, gir, fecha, campo, holes: holesMode, hcp });
   save();
   ['f-score','f-putts','f-fir','f-gir','f-campo'].forEach(id => document.getElementById(id).value = '');
-  msg.textContent = 'Ronda guardada.';
+  msg.textContent = 'Ronda de ' + holesMode + ' hoyos guardada.';
   msg.className = 'msg ok';
   setTimeout(() => msg.textContent = '', 2500);
   updateHome();
 }
 
+// ── HOME ANALYSIS ──────────────────────────────────────────────────────────
 function avg(key) {
   if (!rounds.length) return null;
   return rounds.reduce((s, r) => s + r[key], 0) / rounds.length;
 }
 
 function updateHome() {
+  // Update HCP pill
+  document.getElementById('hcp-display').textContent = hcp % 1 === 0 ? hcp : hcp.toFixed(1);
+
   const n = rounds.length;
   document.getElementById('h-rondas').textContent = n;
   if (!n) {
     ['h-score','h-putts','h-fir'].forEach(id => document.getElementById(id).textContent = '—');
-    document.getElementById('insight-body').innerHTML = 'Registra tu primera ronda para recibir analisis personalizado basado en tus datos reales.';
+    document.getElementById('h-trend').innerHTML = '';
+    document.getElementById('insight-body').innerHTML = '<div class="insight-block"><div class="insight-block-body">Registra tu primera ronda para recibir analisis personalizado basado en tus datos reales.</div></div>';
     return;
   }
-  const aScore = avg('score'), aPutts = avg('putts'), aFir = avg('fir');
-  document.getElementById('h-score').textContent = Math.round(aScore);
-  document.getElementById('h-putts').textContent = Math.round(aPutts);
-  document.getElementById('h-fir').textContent = Math.round(aFir) + '%';
+
+  const aScore = avg('score'), aPutts = avg('putts'), aFir = avg('fir'), aGir = avg('gir');
+  const firR = Math.round(aFir), puttsR = Math.round(aPutts), girR = Math.round(aGir);
+  const scoreR = Math.round(aScore);
+
+  document.getElementById('h-score').textContent = scoreR;
+  document.getElementById('h-putts').textContent = puttsR;
+  document.getElementById('h-fir').textContent = firR + '%';
+
   if (n >= 2) {
-    const diff = rounds[0].score - rounds[1].score;
-    document.getElementById('h-trend').innerHTML = diff < 0
-      ? `<span class="trend-dn">↓ ${Math.abs(diff)} vs anterior</span>`
-      : `<span class="trend-up">↑ +${diff} vs anterior</span>`;
+    const r18 = rounds.filter(r => r.holes === 18 || !r.holes);
+    if (r18.length >= 2) {
+      const diff = r18[0].score - r18[1].score;
+      document.getElementById('h-trend').innerHTML = diff < 0
+        ? `<span class="trend-dn">↓ ${Math.abs(diff)} vs anterior</span>`
+        : diff > 0 ? `<span class="trend-up">↑ +${diff} vs anterior</span>` : '';
+    }
   }
-  let txt = '';
-  const firR = Math.round(aFir), puttsR = Math.round(aPutts);
-  if (firR < 40) txt = `Tu FIR de <strong>${firR}%</strong> es la prioridad urgente. Menos de 40% significa que casi la mitad de los hoyos empiezas en desventaja. Dedica el 50% del tiempo al driver con enfoque en precision, no potencia.`;
-  else if (firR < 52) txt = `Con <strong>${firR}%</strong> de FIR estas por debajo del promedio para tu indice. Cada fairway adicional que encuentres equivale a ~0.8 golpes menos por ronda. El gate drill 3 veces por semana puede subir ese numero en 4 semanas.`;
-  else if (puttsR > 34) txt = `Tu FIR de <strong>${firR}%</strong> va bien. Ahora la oportunidad mas grande esta en los putts: promedias <strong>${puttsR}</strong> y bajar a 32 puede quitarte 2-3 golpes directos sin tocar el swing. Aumenta el tiempo en el putting green.`;
-  else if (firR >= 58) txt = `Excelente FIR de <strong>${firR}%</strong> y ${puttsR} putts promedio. Estas listo para atacar los approach shots. Subir el GIR del ${Math.round(avg('gir'))}% actual al 40%+ es la proxima palanca para bajar el indice.`;
-  else txt = `Con FIR <strong>${firR}%</strong> y ${puttsR} putts, el driver sigue siendo la palanca principal. Mantén la distribucion actual del plan y registra mas rondas para afinar el analisis.`;
-  document.getElementById('insight-body').innerHTML = txt;
+
+  // ── DEEP ANALYSIS ────────────────────────────────────────────────────────
+  const blocks = [];
+
+  // 1. ESTADO GENERAL
+  const targetScore = Math.round(72 + hcp);
+  const diff = scoreR - targetScore;
+  let estadoTxt = '';
+  if (diff <= 0) estadoTxt = `Con un score promedio de <strong>${scoreR}</strong> y un indice <strong>${hcp}</strong>, estas jugando por encima de tu handicap. Excelente momento para atacar areas de mejora y acelerar la bajada.`;
+  else if (diff <= 4) estadoTxt = `Con score promedio de <strong>${scoreR}</strong>, estas a ${diff} golpes de tu handicap objetivo de ${targetScore}. Estas en la zona esperada para indice ${hcp}, pero con el trabajo correcto puedes cerrar esa brecha rapidamente.`;
+  else estadoTxt = `Tu score promedio de <strong>${scoreR}</strong> esta ${diff} golpes sobre tu handicap objetivo. Esto sugiere que hay areas tecnicas o de gestion del campo que estan costando golpes de forma sistematica.`;
+  blocks.push({title:"Estado general", body: estadoTxt});
+
+  // 2. DRIVER / TEE SHOTS
+  let driverTxt = '';
+  if (firR < 40) driverTxt = `Tu FIR de <strong>${firR}%</strong> es critico: menos de 4 fairways de cada 10. A este nivel, cada hoyo empieza con una penalizacion de posicion que se acumula en 3-5 golpes extra por ronda. La causa mas comun en indice ${hcp} es un path de afuera hacia adentro (over-the-top) que produce el slice o el pull. Prioridad maxima.`;
+  else if (firR < 52) driverTxt = `Con <strong>${firR}%</strong> de FIR estas por debajo del promedio para tu indice. Cada fairway adicional que encuentres equivale a aproximadamente 0.8 golpes menos por ronda. El problema probablemente no es el swing completo sino la alineacion o la gestion del tee: elegir menos club o apuntar a la zona mas amplia del fairway puede subir este numero sin tocar la mecanica.`;
+  else if (firR < 62) driverTxt = `Tu FIR de <strong>${firR}%</strong> es solido para indice ${hcp}. Estas encontrando la mayoria de fairways. El foco ahora deberia ser consistencia bajo presion y aprender a trabajar la pelota intencionalmente (draw o fade segun el hoyo) para optimizar el angulo de approach.`;
+  else driverTxt = `Excelente FIR de <strong>${firR}%</strong>. Estas por encima del promedio del PGA Tour (57%). El driver ya no es tu palanca principal de mejora. Puedes mantener el volumen de practica en esta area y redirigir energia a otras zonas.`;
+  blocks.push({title:"Driver y tee shots", body: driverTxt});
+
+  // 3. APPROACH / GIR
+  let girTxt = '';
+  const girTarget = hcp <= 10 ? 45 : hcp <= 15 ? 33 : 25;
+  if (girR < girTarget - 8) girTxt = `Tu GIR de <strong>${girR}%</strong> indica que estas fallando muchos greens en regulacion. Para indice ${hcp} el objetivo es ${girTarget}%. La diferencia entre llegar al green y no llegar puede ser eleccion de club (muchos aficionados llegan cortos por subestimar la distancia real), contacto con los hierros, o mal manejo del viento. Vale la pena revisar tus distancias reales con cada hierro.`;
+  else if (girR < girTarget) girTxt = `Con <strong>${girR}%</strong> de GIR estas cerca del objetivo para tu nivel (${girTarget}%). El margen de mejora esta en los approach shots desde 120-160 yardas, donde la precision marca la diferencia. Apuntar al centro del green en lugar de la bandera puede subir este porcentaje inmediatamente.`;
+  else girTxt = `Buen GIR de <strong>${girR}%</strong>, por encima del objetivo para indice ${hcp}. Cuando llegas al green, la oportunidad de birdie existe. Conectar esto con un buen putting es la formula para bajar el indice significativamente.`;
+  blocks.push({title:"Approach y greens en regulacion", body: girTxt});
+
+  // 4. PUTTING
+  let puttTxt = '';
+  const puttBase = rounds.some(r => r.holes === 9) ? puttsR : puttsR;
+  if (puttsR > 36) puttTxt = `Promedias <strong>${puttsR} putts</strong> por ronda, lo que representa un area de mejora inmediata. Con mas de 36 putts, probablemente estas teniendo multiples 3-putts por ronda. El problema casi siempre no es la linea sino la velocidad: los 3-putts nacen de lag putts que se pasan o se quedan muy cortos. Enfoca el 40% del tiempo de practica en putts desde 6-12 metros.`;
+  else if (puttsR > 32) puttTxt = `Con <strong>${puttsR} putts</strong> promedio estas en zona aceptable para indice ${hcp}, pero bajar a 30-32 puede quitarte 2-4 golpes directos. La diferencia entre 34 y 32 putts esta casi siempre en los putts cortos de 1-2 metros que se fallan por falta de rutina o exceso de ansiedad.`;
+  else puttTxt = `<strong>${puttsR} putts</strong> promedio es excelente. El putting ya no es tu limitante principal. Mantén la practica de rutina y enfoca la energia en las otras areas.`;
+  blocks.push({title:"Putting", body: puttTxt});
+
+  // 5. PRIORIDAD DE ENTRENAMIENTO
+  const priorities = [];
+  if (firR < 52) priorities.push('driver (precision y consistencia)');
+  if (girR < girTarget) priorities.push('approach shots e irons');
+  if (puttsR > 33) priorities.push('putting de distancia media (3-8m)');
+  if (priorities.length === 0) priorities.push('juego corto y scoring desde 100 yardas');
+  const priTxt = `Basado en tus datos, el orden de impacto para bajar de indice ${hcp} es: <strong>${priorities.join(', ')}</strong>. Cada sesion deberia dedicar al menos el 60% del tiempo a la primera prioridad. El plan semanal ya esta calibrado con esta logica.`;
+  blocks.push({title:"Donde practicar primero", body: priTxt});
+
+  document.getElementById('insight-body').innerHTML = blocks.map(b => `
+    <div class="insight-block">
+      <div class="insight-block-title">${b.title}</div>
+      <div class="insight-block-body">${b.body}</div>
+    </div>`).join('');
 }
 
+// ── STATS ──────────────────────────────────────────────────────────────────
 function renderStats() {
   if (!rounds.length) {
     document.getElementById('s-best-fir').textContent = '—';
@@ -611,20 +553,25 @@ function renderStats() {
     return;
   }
   document.getElementById('s-best-fir').textContent = Math.max(...rounds.map(r => r.fir)) + '%';
-  document.getElementById('s-best-score').textContent = Math.min(...rounds.map(r => r.score));
+  const r18 = rounds.filter(r => r.holes === 18 || !r.holes);
+  document.getElementById('s-best-score').textContent = r18.length ? Math.min(...r18.map(r => r.score)) : '—';
   document.getElementById('rounds-list').innerHTML = rounds.map((r, i) => `
     <div class="round-card">
       <div>
         <div class="round-date">${r.fecha}</div>
-        <div class="round-score">${r.score}</div>
+        <div class="round-score-row">
+          <div class="round-score">${r.score}</div>
+          <div class="round-holes">${r.holes || 18} hoyos</div>
+        </div>
         <div class="round-campo">${r.campo}</div>
         <div class="round-stats">
-          <span class="round-stat-pill">FIR ${r.fir}%</span>
-          <span class="round-stat-pill">GIR ${r.gir}%</span>
-          <span class="round-stat-pill">${r.putts} putts</span>
+          <span class="round-pill">FIR ${r.fir}%</span>
+          <span class="round-pill">GIR ${r.gir}%</span>
+          <span class="round-pill">${r.putts} putts</span>
+          ${r.hcp ? `<span class="round-pill">HCP ${r.hcp}</span>` : ''}
         </div>
       </div>
-      <button class="del-btn" onclick="deleteRound(${i})" aria-label="Eliminar">
+      <button class="del-btn" onclick="deleteRound(${i})">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
       </button>
     </div>`).join('');
@@ -634,7 +581,189 @@ function deleteRound(i) {
   if (confirm('Eliminar esta ronda?')) { rounds.splice(i, 1); save(); renderStats(); updateHome(); }
 }
 
+// ── PLAN DATA ──────────────────────────────────────────────────────────────
+const PLANS = {
+  60:[
+    {name:"Driver / Precision",icon:"coral",prio:"Alta",mins:30,drills:[
+      {name:"Swing al 80%",reps:"15 pelotas",
+       desc:"El error mas comun en el driver es intentar pegar demasiado fuerte, lo que genera tension en los antebrazos y arruina la coordinacion. Coloca un alignment stick en el suelo apuntando al target. Realiza swings con un ritmo deliberadamente suave, sintiendo que los brazos se mueven liviano y el cuerpo rota sin apuro.",
+       focus:"Mantén la muñeca izquierda plana en el impacto. El follow-through debe terminar con el pecho apuntando al target y el peso completamente en el pie izquierdo. Si pierdes el equilibrio al final, estas pegando demasiado fuerte.",
+       tip:"Graba un video desde atras con el telefono. Un swing al 80% bien coordinado llega casi tan lejos como uno al 100% tenso. Muchos golfistas descubren que pierden solo 5-10 yardas pero ganan 15 de precision."},
+      {name:"Gate Drill",reps:"10 reps",
+       desc:"Coloca dos tees en el suelo formando una puerta de 25-30cm justo delante de donde esta la pelota (no atras). El objetivo es que el club pase por la puerta tanto en la bajada como en la salida. Este drill expone inmediatamente si tu path viene de afuera hacia adentro (el error que produce el slice).",
+       focus:"Si golpeas el tee externo en la bajada, tu path es over-the-top. Si golpeas el tee interno en la salida, estas bloqueando el release. Trabaja lentamente hasta poder pasar por la puerta 8 de cada 10 veces antes de agregar velocidad.",
+       tip:"Empieza con la mitad de velocidad. Nadie aprende path a velocidad maxima. Una vez que lo sientes lento, agrega gradualmente velocidad manteniendo la sensacion de pasar entre los tees."}
+    ]},
+    {name:"Putting",icon:"green",prio:"Base",mins:20,drills:[
+      {name:"Circulo de 1.5m",reps:"3 rondas",
+       desc:"Coloca 6 pelotas en circulo alrededor del hoyo a exactamente 1.5 metros, usando cada punto cardinal y los diagonales. Debes embocar las 6 consecutivas para completar una ronda. Si fallas en la pelota 5, empiezas de cero. Este drill es deliberadamente incomodo porque replica la presion real del campo.",
+       focus:"En putts cortos el error casi nunca es la linea sino la deceleracion: el cerebro anticipa el impacto y frena el putter. Mantén la aceleracion constante a traves de la pelota. El putter debe seguir moviendose 10cm despues del impacto.",
+       tip:"Mira el hoyo en lugar de la pelota en los ultimos 2-3 putts de cada ronda. Este truco elimina la tension en el stroke y mejora la precision en putts menores a 2 metros."}
+    ]}
+  ],
+  180:[
+    {name:"Driver / Precision",icon:"coral",prio:"Alta",mins:75,drills:[
+      {name:"Gate Drill intensivo",reps:"20 reps",
+       desc:"Coloca dos tees formando una puerta de 25cm. La primera serie de 10 busca un draw suave: siente que la cara del club apunta levemente a la derecha del target en el impacto mientras el path va de adentro hacia afuera. La segunda serie de 10 busca un fade: mantén el path recto pero con la cara levemente abierta. Alterna sin descanso.",
+       focus:"El control de path y face angle son las dos variables que determinan el 100% de la curva del vuelo. Path controla donde empieza el vuelo, face angle controla hacia donde curva. Comprender esto intelectualmente acelera el aprendizaje motor.",
+       tip:"Si no puedes producir intencionalamente draw y fade, todavia no controlas el driver. Es una habilidad que todo jugador de indice 10 deberia tener. No te frustres si no sale al principio: toma entre 3-6 semanas de practica especifica."},
+      {name:"Rutina pre-shot completa",reps:"10 pelotas",
+       desc:"Para cada una de las 10 pelotas, ejecuta tu rutina completa sin saltarte ningun paso: (1) parate 2 metros detras de la pelota y elige el target especifico, (2) visualiza el vuelo durante 3-4 segundos, (3) muevete al lado de la pelota y alinea los pies paralelos al target, (4) un practice swing enfocado, (5) ejecuta sin dudar.",
+       focus:"La rutina pre-shot tiene un proposito neurocientifico: mueve al cerebro del modo analitico al modo automatico. Cuando la rutina es identica en el rango y en el campo, el cuerpo sabe que ya no es momento de pensar sino de ejecutar.",
+       tip:"Cronometra tu rutina. El tiempo ideal es 15-20 segundos desde que te paras detras de la pelota hasta el impacto. Mas lento genera paralizacion, mas rapido genera descuido. Encuentra tu ritmo personal y respetalo."},
+      {name:"10 pelotas con target",reps:"10 pelotas",
+       desc:"Elige un target especifico en el rango: un cartel, un barreno de color, o una zona de 10 metros de ancho. Antes de cada pelota detente, ejecuta la rutina completa y registra mentalmente si el resultado fue aceptable (dentro del target) o no. Esto entrena la capacidad de evaluar resultados con objetividad.",
+       focus:"Muchos golfistas practican sin target, lo que desarrolla un swing de rango que no transfiere al campo. El campo siempre tiene un target. Entrenar con target desde el primer swing desarrolla la transferencia.",
+       tip:"Un buen resultado en esta sesion es 6 de 10 dentro del target. No 10 de 10. Si estas embocando 9 de 10, el target es demasiado grande o estas muy cerca. El reto debe ser real."}
+    ]},
+    {name:"Juego corto",icon:"amber",prio:"Media",mins:60,drills:[
+      {name:"Chipping desde rough",reps:"20 pelotas",
+       desc:"El rough cambia todo: la hierba entre el club y la pelota reduce el spin y hace que la pelota ruede mas al aterrizar. Necesitas compensar con un swing mas descendente y posicionando las manos mas adelantadas. Coloca las manos 5cm adelante del centro, pon mas peso en el pie izquierdo y ataca la pelota con un angulo de ataque descendente.",
+       focus:"El error mas comun en rough es intentar levantar la pelota ayudandola con el cuerpo. El loft del club hace ese trabajo. Tu trabajo es hacer contacto descendente y limpio. La pelota saldra sola.",
+       tip:"Practica primero con el SW (sand wedge) desde rough antes de usar el PW o el hierro 8. El SW tiene mas loft y perdona mas los errores. Una vez que controlas el SW en rough, los otros clubs son mas faciles."},
+      {name:"Ejercicio de bunker",reps:"15 salidas",
+       desc:"El bunker es el unico shot en golf donde el club no toca la pelota directamente: entra 5-7cm detras de ella y la arena lanza la pelota. Dibuja una linea en la arena y practica golpear siempre en la misma distancia detras de la linea. Abre la cara del club 45 grados, stance abierto y swing a lo largo de la linea de los pies (no del target).",
+       focus:"La apertura de la cara controla la altura y la distancia. Mas abierta: vuelo mas alto, menos distancia. Menos abierta: vuelo mas bajo, mas distancia y mas roll. Para bunkers cortos (menos de 10m) usa la cara mas abierta. Para bunkers largos, mas cuadrada.",
+       tip:"Si el bunker te genera ansiedad, es porque no confias en la tecnica. La confianza en el bunker viene exclusivamente de la practica especifica. 15 salidas por sesion durante 4 semanas transforma completamente la relacion con el bunker."},
+      {name:"Up and Down challenge",reps:"10 situaciones",
+       desc:"Crea 10 situaciones distintas: desde el fringe a 5m, desde el rough a 10m, atras del green con obstaculos, bunker, cuesta arriba, cuesta abajo. Para cada situacion, el objetivo es necesitar solo 2 golpes para embocar (chip/pitch + putt). Llevar el score: cuantos up and downs completas de 10.",
+       focus:"El criterio de seleccion del shot es clave: cuando el lie lo permite, prefiere siempre el shot de mas bajo vuelo (putting o chip bajo). Solo usa el vuelo alto cuando es necesario (obstaculos, rough denso). El shot mas seguro casi siempre no es el mas espectacular.",
+       tip:"Un indice 12 deberia lograr 4-5 up and downs de 10 en condiciones mixtas. Si estas bajo 4, el juego corto esta costando golpes directos. Si estas sobre 7, ya tienes un arma competitiva. El benchmark del Tour es 60% o mas."}
+    ]},
+    {name:"Putting",icon:"green",prio:"Base",mins:45,drills:[
+      {name:"Serie progresiva 1m-5m",reps:"5 rondas",
+       desc:"Empieza con 1 putt desde 1 metro. Si lo embocar mueve a 2m, si embocar mueve a 3m, luego 4m y finalmente 5m. Una ronda completa es embocar las 5 distancias consecutivas. Si fallas en cualquier punto, vuelves a 1 metro. Lleva el total de rondas completas en la sesion.",
+       focus:"En cada distancia ajusta solo la velocidad del stroke, no la mecanica. El mismo stroke que emboca desde 1m debe funcionar desde 5m, solo mas largo y mas rapido. Muchos aficionados cambian la mecanica segun la distancia, lo que crea inconsistencia.",
+       tip:"Si no puedes completar una ronda en 15 intentos, reduce el reto: empieza en 80cm. La frustracion no genera aprendizaje. El reto debe ser dificil pero alcanzable. Ajusta la dificultad segun tu nivel real."},
+      {name:"Lag putting desde 10m",reps:"10 pelotas",
+       desc:"Desde 10 metros, pon un tee a 60cm del hoyo en cada lado creando una zona de aterrizaje objetivo. El objetivo NO es embocar sino dejar la pelota dentro de esa zona. Cuenta cuantas de 10 lo logras. Los 3-putts en rondas reales casi siempre vienen de lag putts mal calibrados, no de putts cortos fallados.",
+       focus:"A distancias largas lee el green completo desde detras de la pelota: busca la pendiente general, las zonas de grano (hierba brillante vs opaca) y cualquier cambio de nivel. El 70% de la lectura esta en los primeros 2 metros antes del hoyo.",
+       tip:"Un drill util: antes de cada lag putt cierra los ojos, imagina la distancia y ejecuta el stroke. Luego abre los ojos. Muchas veces la pelota queda mas cerca que cuando miras fijamente. Esto mejora la calibracion instintiva de la fuerza."}
+    ]}
+  ],
+  240:[
+    {name:"Driver / Precision",icon:"coral",prio:"Alta",mins:90,drills:[
+      {name:"Gate Drill + shape",reps:"30 reps",
+       desc:"La sesion mas completa de precision con driver. Divide en 3 series de 10: draws intencionales, fades intencionales y rectas. Entre series descansa 90 segundos y revisa mentalmente que cambio hiciste para producir el shape. Tener consciencia de por que algo funciona acelera el aprendizaje.",
+       focus:"Para el draw: cierra la stance 5 grados, siente las manos girando hacia la izquierda en el release, path de 3-4 grados de adentro hacia afuera. Para el fade: abre la stance 5 grados, mantén la cara cuadrada al target real mientras el path va hacia la izquierda de los pies. La diferencia es sutil pero consistente.",
+       tip:"Si produces el mismo shape en las 3 series, no estas usando la mecanica correcta para cada una: probablemente estas generando la curva por alineacion del cuerpo y no por manipulacion real del club. El objetivo es que el cuerpo vaya al mismo lugar y que el shape venga del club."},
+      {name:"Simulacion de 9 hoyos",reps:"9 tee shots",
+       desc:"Imagina los primeros 9 hoyos de tu campo habitual. Para cada hoyo, toma la decision de club y estrategia antes de pararte a la pelota: que zona del fairway atacas, si necesitas draw o fade, si hay OB o agua que cambia el plan. Ejecuta el shot y anota si seria fairway, rough o fuera. Calcula tu FIR simulado.",
+       focus:"El course management desde el tee es responsable de al menos 3-4 golpes por ronda en jugadores de indice 10-15. La pregunta no es cuanto puedo pegar sino donde necesito la pelota para tener el mejor approach. A veces esa respuesta implica usar un hierro 3.",
+       tip:"Compara tu FIR simulado con tu FIR real de The Grint. Si el simulado es mas alto, el problema es ejecucion bajo presion. Si son similares, el problema es mecanico o de gestion. Esta diferencia define completamente el tipo de practica que necesitas."},
+      {name:"Video analisis",reps:"5 swings",
+       desc:"Graba 5 swings desde atras (linea de vuelo) y 5 desde el lado. Desde atras busca que el club en la bajada pase por debajo del plano de la subida (swing en plane). Desde el lado verifica que las manos esten adelante de la pelota en el impacto y que el cuerpo termine completamente rotado. No busques perfeccion, busca consistencia.",
+       focus:"Un defecto consistente es mas facil de corregir que un swing inconsistente. Si todos tus swings lucen diferentes, el problema es de fundamentos (grip, postura, alineacion). Si todos lucen iguales pero el resultado no es bueno, es un problema de mecanica especifica.",
+       tip:"No compares tu swing con el de un Tour Pro. Compara tu swing de hoy con el de la semana pasada. La mejora es incremental. Busca un patron que sea repetible para tu cuerpo, no el pattern de otro."}
+    ]},
+    {name:"Juego corto",icon:"amber",prio:"Media",mins:75,drills:[
+      {name:"Chipping variado",reps:"30 pelotas",
+       desc:"Divide en 3 grupos de 10: desde fairway (chip bajo con hierro 8 o PW), desde rough corto (SW con manos adelantadas) y desde fringe con putter. Para el chip de hierro 8: stance estrecho, 70% del peso adelante, manos muy adelantadas, movimiento de brazos pendular sin romper muñecas. Para el SW desde rough: mas loft, algo mas de velocidad.",
+       focus:"La seleccion del shot correcto vale mas que la ejecucion perfecta del shot equivocado. Antes de cada chip hazte estas dos preguntas: (1) puedo llegar al green rodando?, y (2) hay algún obstaculo que me obligue a usar vuelo? Si la respuesta a ambas es no, usa el putter.",
+       tip:"Mide la distancia de chip que dominas mejor. Muchos golfistas tienen un shot de 10-15 metros que ejecutan casi perfecto. Conocer ese shot y posicionar la pelota para tenerlo es una habilidad de gestion del campo que se desarrolla con consciencia, no solo practica."},
+      {name:"Bunker con variaciones",reps:"20 salidas",
+       desc:"Cinco salidas normales de lie plano, cinco con la pelota enterrada (fried egg), cinco en cuesta arriba y cinco en cuesta abajo. Para el fried egg: cierra la cara del club (contra-intuitivo), swing mas descendente y mas fuerte. Para cuesta arriba: ajusta los hombros paralelos a la pendiente. Para cuesta abajo: lo mismo pero pon mas peso adelante.",
+       focus:"En cuesta abajo desde bunker, el error universal es dejar el peso atras intentando ayudar la pelota a salir. Esto produce el shot mas comun: la pelota golpea el borde del bunker. Pon el 70% del peso en el pie delantero y manteno ahi durante todo el swing.",
+       tip:"Despues de cada salida de bunker, observa la huella en la arena. Debe ser un ovalo de aproximadamente 20cm de largo empezando 5-7cm detras de donde estaba la pelota. Si la huella es demasiado profunda, estas pegando muy atras. Si la pelota deja casi sin huella, estas too thin."},
+      {name:"Pitch de distancia controlada",reps:"30-60 yds",
+       desc:"Pon marcadores a 30, 45 y 60 yardas. Para cada distancia, el objetivo es caer dentro de un circulo de 2 metros del marcador. Usa el mismo club para todas las distancias (SW o AW) y controla el largo del swing solamente: backswing hasta la cadera para 30 yardas, hasta los hombros para 45, hasta arriba para 60.",
+       focus:"La clave del pitch de distancia controlada es el largo del backswing, no la velocidad del swing. Muchos aficionados intentan controlar la distancia con la velocidad, lo que produce resultados inconsistentes. Establece 3 longitudes de swing y aprende las distancias de cada una.",
+       tip:"Este es uno de los ejercicios con mayor retorno en terminos de strokes ganados. Un jugador que controla precisamente sus pitches de 30-60 yardas convierte esas situaciones en par o birdie oportunidades en lugar de bogeys. Vale mas que 30 metros de driver."}
+    ]},
+    {name:"Putting",icon:"green",prio:"Base",mins:45,drills:[
+      {name:"10 consecutivos desde 1m",reps:"10 seguidos",
+       desc:"Coloca 10 pelotas en fila a exactamente 1 metro del hoyo. Debes embocarlas todas consecutivas. Si fallas en el putt numero 8, vuelves a cero. La presion que sientes en el putt 7 u 8 es la misma que en el fairway cuando tienes un putt para salvar par. Eso es exactamente lo que estas entrenando.",
+       focus:"A 1 metro los ojos pueden distorsionar la linea si los mueves antes del impacto. Elige la linea, pon los ojos sobre la pelota y mantén la vista fija hasta que el putter haya pasado. Solo entonces miras el hoyo. Este fundamento basico elimina la mayoria de los fallos cortos.",
+       tip:"Si fallas consistentemente en la misma direccion (todos a la derecha o todos a la izquierda), el problema es alineacion del putter, no el stroke. Pon el putter en el suelo apuntando al hoyo sin pararte a la pelota y verifica que la cara este realmente cuadrada."},
+      {name:"Lag desde 12m",reps:"10 pelotas",
+       desc:"Desde 12 metros, el objetivo es dejar cada pelota dentro de una zona de 80cm alrededor del hoyo. Antes de cada putt, camina la distancia completa para calibrar el largo, nota la pendiente general y decide si quieres que la pelota llegue al hoyo suavemente (moribunda) o con algo de velocidad para no verse afectada por el grano.",
+       focus:"A 12 metros la lectura del green es mas importante que la mecanica del stroke. Un putt mecanicamente imperfecto con buena lectura queda cerca. Un putt tecnicamente perfecto con mala lectura deja 2 metros para el siguiente. Desarrolla el habito de leer siempre antes de pararte.",
+       tip:"Practica el drill de la zapatilla: pon una zapatilla a 60cm del hoyo y trata de que la pelota pare antes de la zapatilla pero lo mas cerca posible. Esto entrena el control de velocidad mejor que cualquier drill de circulos."}
+    ]},
+    {name:"Rutina mental",icon:"purple",prio:"Base",mins:30,drills:[
+      {name:"Pre-shot routine cronometrada",reps:"20 reps",
+       desc:"Define tu rutina en exactamente 3-4 pasos y cronometra que siempre tome el mismo tiempo. Sugerencia: (1) evalua el lie y elige el shot - 10 segundos, (2) visualizacion desde detras de la pelota - 5 segundos, (3) alineacion y waggle - 5 segundos, (4) disparo. Total: 20 segundos. Esta es tu rutina para el campo: practicalda exactamente igual aqui.",
+       focus:"La rutina es un ancla cognitiva que separa el pensamiento (antes) de la ejecucion (durante). Una vez que empiezas la rutina, el pensamiento tecnico debe terminar. Si tienes un pensamiento tecnico mientras haces el swing, la rutina no esta cumpliendo su funcion.",
+       tip:"Si un pensamiento tecnico entra durante el swing, detente y reinicia la rutina desde el principio. Nunca termines un shot con un pensamiento technico activo. Con el tiempo, la rutina automaticamente apaga el modo analitico."},
+      {name:"Course management en papel",reps:"9 hoyos",
+       desc:"Con papel y lapiz, diseña el juego optimo en 9 hoyos especificos de tu campo. Para cada hoyo escribe: club del tee, zona objetivo del tee shot, club de approach, parte del green a atacar segun posicion de la bandera (bandera adelante: ataca el fondo del green; bandera en el fondo: ataca el centro o adelante). Esto es pensar como un caddie.",
+       focus:"El course management reduce el numero de bogeys dobles y triples que no vienen de mal golf sino de malas decisiones. Un bogey doble casi siempre viene de intentar un shot imposible desde una mala posicion. La decision correcta hubiera sido un bogey.",
+       tip:"Despues de tu proxima ronda, revisa cuantas veces siguiste el plan que escribiste en este ejercicio. La diferencia entre el plan y la ejecucion real revela donde la presion del campo te hace cambiar de decision. Eso es lo que hay que trabajar."}
+    ]}
+  ],
+  300:[
+    {name:"Driver / Precision",icon:"coral",prio:"Alta",mins:100,drills:[
+      {name:"Gate Drill 40 reps",reps:"40 reps",
+       desc:"La sesion mas completa de precision. Divide en 4 series de 10 con 90 segundos de descanso: 10 draws, 10 fades, 10 rectas hacia target izquierdo y 10 rectas hacia target derecho. El objetivo es que en cada serie al menos 7 de 10 pasen por la puerta. Llevar el registro de la sesion.",
+       focus:"Al final de la sesion deberia haber un pattern claro: tu shape de miss (el error que repites). Si siempre fallas en la misma direccion, ese es tu patron de error. Identificarlo es el primer paso para corregirlo. Sin datos no hay coaching efectivo.",
+       tip:"Fotografía o anota los resultados de cada serie. Con 4 semanas de datos tendras suficiente informacion para identificar si el problema es consistente (mecanico) o aleatorio (mental). Esta diferencia cambia completamente el tipo de trabajo necesario."},
+      {name:"18 tee shots simulados",reps:"18 hoyos",
+       desc:"La simulacion mas completa. Imagina los 18 hoyos con todos los detalles: viento, posicion de la bandera, estado de animo, presion del marcador. Para cada hoyo, toma la decision de club y target, ejecuta con rutina completa y anota el resultado. Calcula FIR y analiza que hoyos especificos te cuestan mas.",
+       focus:"Identifica los 3 hoyos donde mas frecuentemente fallas el fairway. En esos hoyos especificos hay un patron: quizas el angulo del tee, la presion de ciertos obstaculos, o una tendencia de miss que se activa en situaciones especificas. Conocer esos hoyos es informacion de alto valor.",
+       tip:"Si encuentras que fallas consistentemente en hoyos con OB o agua, el problema es mental (presion aumenta tension que cambia el swing) no mecanico. La solucion es entrenamiento de manejo de ansiedad, no mas practica mecanica."},
+      {name:"Draw-Fade-Recta",reps:"30 pelotas",
+       desc:"10 draws, 10 fades, 10 rectas. Para cada grupo, antes de la primera pelota toma 30 segundos para visualizar el vuelo especifico y sentir la mecanica necesaria. El objetivo no es perfeccion sino intencionalidad: saber antes de pegar que vas a buscar y evaluar si lo lograste.",
+       focus:"La capacidad de trabajar la pelota intencionalmente es la diferencia entre indice 12 e indice 8. Un jugador de indice 8 puede posicionar la pelota en el fairway eligiendo la curva que evita el obstaculo. Un jugador de indice 12 solo puede esperar que su miss natural no sea catastrofica.",
+       tip:"Si produces draw y fade pero no rectas, probablemente estas usando la curva para corregir defectos del path. Una vez que produces los 3 shapes con intencionalidad, el siguiente nivel es controlar la altura de cada uno: alto, medio y bajo para cada shape. Eso es precision de Tour."},
+      {name:"Analisis de video completo",reps:"10 swings",
+       desc:"5 swings desde atras y 5 desde el lado. Desde atras busca: path del club en la bajada (debe pasar por debajo del plano de subida), posicion de la cara en el impacto, extension de los brazos en el through-swing. Desde el lado busca: posicion de la cabeza al impacto (debe mantenerse detras de la pelota), transferencia de peso completa.",
+       focus:"Un analisis de video util no busca todos los defectos sino el defecto principal: la causa raiz que genera los efectos secundarios. Casi siempre hay un patron central. Arreglar ese patron resuelve automaticamente varios problemas secundarios. Trabajar todos los defectos a la vez no funciona.",
+       tip:"Compara el video de hoy con uno de hace 4 semanas. El progreso es mas visible en comparacion temporal que en analisis de un solo punto. Si no hay diferencia visible en 4 semanas de practica especifica, el approach de practica necesita cambiar."}
+    ]},
+    {name:"Juego corto",icon:"amber",prio:"Media",mins:90,drills:[
+      {name:"Chipping 40 pelotas",reps:"40 pelotas",
+       desc:"Divide en 4 grupos de 10: fairway (hierro 8), rough corto (SW), rough largo (LW con mucho loft), fringe (putter o hierro 6). Para cada grupo llevar el conteo de cuantos dejas a menos de 1.5 metros del hoyo. El benchmark para bajar de indice 10 es 6 de 10 desde fairway y 4 de 10 desde rough largo.",
+       focus:"El chip desde fairway con hierro 8 es el shot de mas alto porcentaje de exito para la mayoria de situaciones alrededor del green. Si no tienes confianza en este shot, es probable que estes usando el SW en situaciones donde no es la mejor opcion. El hierro 8 o 9 es mas facil de controlar para la mayoria.",
+       tip:"Practica el chip con la vision periferica: en lugar de mirar la pelota directamente, enfoca los ojos 2-3cm adelante de ella (donde quieres que el club entre al suelo). Este ajuste mejora el contacto descendente de forma casi inmediata en la mayoria de aficionados."},
+      {name:"Bunker avanzado",reps:"25 salidas",
+       desc:"5 salidas normales, 5 fried egg (pelota enterrada), 5 cuesta arriba, 5 cuesta abajo y 5 con el hoyo a menos de 5 metros del bunker (necesitas mucho vuelo, poca distancia). Para el ultimo grupo: cara completamente abierta (apuntando al cielo), swing rapido y corto, entra 3-4cm detras de la pelota. La arena frenara la pelota rapidamente.",
+       focus:"Los bunkers cortos con el hoyo cerca son los mas dificiles porque requieren altura maxima con minima distancia. El error casi universal es intentar levantar la pelota con el cuerpo. La apertura de la cara crea el loft. Tu unico trabajo es golpear la arena en el lugar correcto.",
+       tip:"Dibuja una linea en la arena a 5cm detras de la posicion de la pelota y practica entrar exactamente en esa linea. La consistencia del punto de entrada es mas importante que cualquier otro aspecto de la tecnica de bunker."},
+      {name:"Pitch de yardaje exacto",reps:"40-80 yds",
+       desc:"Pon marcadores a 40, 50, 60, 70 y 80 yardas con un circulo de 2 metros alrededor de cada uno. Para cada distancia ejecuta 4 pelotas y registra cuantas caen dentro del circulo. Usa el SW para 40-60 yardas y el GW o AW para 60-80. El objetivo es 3 de 4 dentro del circulo en cada distancia.",
+       focus:"El pitch de yardaje exacto requiere calibrar 3 variables simultaneamente: largo del swing (90%), velocidad del swing (10%), y seleccion del club. Una vez calibrados los largos de swing para cada distancia, la ejecucion se vuelve automatica y repetible. Es un proceso de calibracion, no de talento.",
+       tip:"Lleva un cuaderno con tus distancias reales. Tu SW puede llegar a 70 yardas con swing completo y a 45 con swing de tres cuartos. Conocer estos numeros exactos elimina la incertidumbre y la improvisacion en el campo. La improvisacion en distancias cortas regala golpes."}
+    ]},
+    {name:"Putting",icon:"green",prio:"Base",mins:60,drills:[
+      {name:"9 hoyos de putting competitivo",reps:"9 hoyos",
+       desc:"Juega 9 hoyos del putting green con score real: 1 putt es birdie (-1), 2 putts es par (0), 3 putts es bogey (+1). El objetivo es terminar en 0 o mejor (18 putts en 9 hoyos). Para cada hoyo elige una distancia realista: entre 2 y 8 metros. Llevar el score crea la presion del campo de forma efectiva.",
+       focus:"Cuando tienes score real, el cerebro activa los mismos mecanismos de presion que en el campo. Ese putt del hoyo 8 para salvar el par del juego se siente como si importara de verdad. Entrenar en ese estado emocional es donde ocurre la mejora real en putting bajo presion.",
+       tip:"Si tu score es consistentemente positivo (mas bogeys que pares), el problema esta en los 3-putts. Si tu score es inconsistente, el problema esta en los putts de 2-4 metros que estan fallando. Cada patron tiene una solucion de practica diferente."},
+      {name:"Lag desde 15m",reps:"10 pelotas",
+       desc:"La distancia mas larga del programa. Desde 15 metros, el objetivo es que ninguna pelota quede a mas de 80cm. A esta distancia el pace del green se vuelve critico: un green rapido (stimp 11+) puede hacer que un putt fuerte sobrepase 2 metros, mientras que en un green lento el mismo stroke queda corto. Calibra para las condiciones del dia.",
+       focus:"En putts de 15 metros, divide el putt mentalmente en dos partes: los primeros 10 metros donde la velocidad inicial es determinante, y los ultimos 5 metros donde la pendiente final es lo que mas influye. Lee primero los ultimos 5 metros (donde la pelota va mas lenta y la pendiente tiene mas efecto) y luego los primeros 10.",
+       tip:"Practica lag putting en diferentes condiciones de verde: manana con rocio (mas lento), tarde (mas rapido). La capacidad de calibrar rapidamente para condiciones diferentes es una habilidad que separa a los jugadores de campo de los de rango."},
+      {name:"Putting con un ojo tapado",reps:"20 putts",
+       desc:"Tapa el ojo no dominante (derecho si eres diestro, izquierdo si eres zurdo). Esto elimina la vision binocular y fuerza al cerebro a confiar en la vision monocular para juzgar la distancia y la linea. Muchos golfistas descubren que ven la linea con mas claridad con un solo ojo porque eliminan la confusion de dos perspectivas ligeramente distintas.",
+       focus:"Este drill expone problemas de alineacion que son invisibles con ambos ojos. Si todos los putts van a la misma direccion con un ojo tapado, tu brain map del hoyo esta sesgado. Esto suele corregirse ajustando la posicion de la cabeza (mas directamente sobre la linea de putt) en lugar de la alineacion del putter.",
+       tip:"Usa este drill como diagnostico al principio de cada sesion de putting. 5 putts desde 2 metros con un ojo tapado te dira rapidamente si tu alineacion esta bien ese dia. Si los 5 van a la derecha, compensa ligeramente a la izquierda en la sesion completa."}
+    ]},
+    {name:"Irons y approach",icon:"blue",prio:"Media",mins:30,drills:[
+      {name:"10 pelotas por hierro",reps:"3 hierros",
+       desc:"Elige el 7, el 9 y el PW. Para cada uno, 10 pelotas con un target especifico en el rango. Antes de cada serie, toma nota de tu target y del resultado promedio. No intentes pegar mas lejos: el objetivo es impactar el centro de la cara en el 8 de 10 shots. Un center contact con el 7 siempre supera a un toe hit con el 5.",
+       focus:"El contact point en la cara del club es el factor mas importante en la precision de los irons. Un shot golpeado en el toe vuela a la derecha y pierde hasta 20 yardas de distancia. Un shot en el heel vuela a la izquierda. Pon impact tape o spray foot powder en la cara para ver exactamente donde estas impactando.",
+       tip:"Si tu patron de impacto esta en el toe, probablemente estas parado demasiado lejos de la pelota o tu arco de swing es demasiado plano. Si esta en el heel, estes demasiado cerca o tu arco es muy vertical. Ajusta la postura antes de trabajar en la mecanica del swing."},
+      {name:"GIR desde 150 yardas",reps:"10 pelotas",
+       desc:"Desde 150 yardas, el objetivo es siempre el centro del green, no la bandera. Elige el club que te lleva comodamente a esa distancia (para la mayoria de indice 12, un hierro 6 o 7). Imagina un green de 30 metros de profundidad y apunta al centro. Registra cuantas de 10 llegarian al green.",
+       focus:"Atacar la bandera desde 150 yardas es la decision equivocada para el 90% de los approach shots en indice 10-15. Las banderas estan casi siempre en posiciones dificiles (cerca de bunkers, bordes del green). Apuntar al centro aumenta el GIR y reduce los bogeys dobles drasticamente.",
+       tip:"Calcula el porcentaje de dispersión de tus approach shots. Si impactas el green 5 de 10 desde 150 yardas, tienes una dispersion de 15 metros a cada lado. Apuntar al centro del green significa que incluso tus misses quedaran en el green. Apuntar a la bandera significa que la mitad de tus misses se van fuera."}
+    ]},
+    {name:"Rutina mental",icon:"purple",prio:"Base",mins:20,drills:[
+      {name:"Pre-shot routine completa",reps:"20 shots",
+       desc:"En cada shot de la sesion, sin excepciones, ejecuta la rutina completa. No importa que sea el shot numero 80 del dia y que estes cansado. La rutina debe ser automatica bajo fatiga porque en el campo los momentos criticos suelen llegar despues de 3-4 horas de juego. Entrenarla bajo fatiga es entrenarla para cuando mas importa.",
+       focus:"Una rutina bien entrenada actua como un reset entre shots: independientemente de lo que paso en el shot anterior, la rutina te devuelve a un estado de enfoque neutral. Este es uno de los habitos mentales mas importantes en el golf de alto nivel. Separa completamente cada shot del anterior.",
+       tip:"Diseña una señal de inicio de rutina: puede ser un paso atras, ajustar el guante, o un waggle especifico. Esta señal le dice al cerebro que comienza la rutina. Con el tiempo, la señal sola genera el estado mental correcto para ejecutar. Es condicionamiento clasico aplicado al golf."},
+      {name:"Course management 18 hoyos",reps:"18 hoyos",
+       desc:"Diseña el juego completo de 18 hoyos de tu campo con el nivel de detalle de un caddie de Tour: para cada hoyo, el club del tee, la zona objetivo del tee, el club de approach, la parte del green a atacar para cada posicion de bandera posible (adelante-centro-atras, izquierda-derecha) y la zona de miss aceptable. Esto es un game plan completo.",
+       focus:"El objetivo del course management no es jugar el golf perfecto sino el golf mas inteligente posible para tu nivel tecnico. Un jugador de indice 12 que juega smart puede scorear como uno de indice 9. La estrategia no reemplaza la tecnica pero maximiza lo que la tecnica actual puede producir.",
+       tip:"Guarda este game plan en el telefono y usalo en tu proxima ronda. Despues de la ronda, compara las decisiones que tomaste con las del plan. Los hoyos donde te desviaste del plan son los hoyos de aprendizaje mas importante. El analisis post-ronda es donde ocurre el crecimiento estrategico."}
+    ]}
+  ]
+};
+
+// ── INIT ───────────────────────────────────────────────────────────────────
 document.getElementById('f-fecha').value = new Date().toISOString().split('T')[0];
+document.getElementById('hcp-display').textContent = hcp % 1 === 0 ? hcp : hcp.toFixed(1);
 renderPlan();
 updateHome();
 </script>
