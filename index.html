@@ -447,8 +447,25 @@
 
 <script>
 // ── STATE ──────────────────────────────────────────────────────────────────
-let rounds = JSON.parse(localStorage.getItem('golf-rounds-v3') || '[]');
-let hcp = parseFloat(localStorage.getItem('golf-hcp') || '12');
+// Migrate rounds from any previous key to v3
+try {
+  if (!localStorage.getItem('golf-rounds-v3')) {
+    var _keys = ['golf-rounds-v2', 'golf-rounds', 'golf-coach-rounds'];
+    for (var _i = 0; _i < _keys.length; _i++) {
+      var _old = localStorage.getItem(_keys[_i]);
+      if (_old && _old !== '[]') {
+        localStorage.setItem('golf-rounds-v3', _old);
+        break;
+      }
+    }
+  }
+} catch(e) {}
+let rounds = [];
+let hcp = 12;
+try {
+  rounds = JSON.parse(localStorage.getItem('golf-rounds-v3') || '[]');
+  hcp = parseFloat(localStorage.getItem('golf-hcp') || '12');
+} catch(e) { rounds = []; hcp = 12; }
 let planTime = 180;
 let holesMode = 18;
 let expandedCards = {};
@@ -1111,6 +1128,96 @@ function renderTendencias() {
       <div class="tend-detail">Promedio reciente: <strong>${newAvg.toFixed(1)}${m.unit}</strong> · ${diffTxt}${m.target !== undefined ? ' · objetivo: ' + m.target + m.unit : ''}</div>
     </div>`;
   }).join('');
+}
+
+
+// ── GOALS ──────────────────────────────────────────────────────────────────
+var goals = {score:82, fir:60, gir:40, putts:32};
+try {
+  var _storedGoals = localStorage.getItem('golf-goals');
+  if (_storedGoals) goals = JSON.parse(_storedGoals);
+} catch(e) {}
+
+var goalsTemp = {score:82, fir:60, gir:40, putts:32};
+
+var GOAL_LIMITS = {
+  score: { min: 70, max: 110, unit: '' },
+  fir:   { min: 20, max: 100, unit: '%' },
+  gir:   { min: 10, max: 90,  unit: '%' },
+  putts: { min: 24, max: 40,  unit: '' }
+};
+
+function saveGoalsStore() {
+  try { localStorage.setItem('golf-goals', JSON.stringify(goals)); } catch(e) {}
+}
+
+function openGoalsModal() {
+  goalsTemp = {score:goals.score, fir:goals.fir, gir:goals.gir, putts:goals.putts};
+  updateGoalDisplays();
+  document.getElementById('goals-modal').classList.add('open');
+}
+function closeGoalsModal(e) {
+  if (e.target === document.getElementById('goals-modal'))
+    document.getElementById('goals-modal').classList.remove('open');
+}
+function adjustGoal(key, delta) {
+  var lim = GOAL_LIMITS[key];
+  goalsTemp[key] = Math.max(lim.min, Math.min(lim.max, goalsTemp[key] + delta));
+  document.getElementById('goal-' + key + '-val').textContent = goalsTemp[key] + lim.unit;
+}
+function updateGoalDisplays() {
+  var keys = ['score','fir','gir','putts'];
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i];
+    document.getElementById('goal-' + k + '-val').textContent = goalsTemp[k] + GOAL_LIMITS[k].unit;
+  }
+}
+function saveGoals() {
+  goals = {score:goalsTemp.score, fir:goalsTemp.fir, gir:goalsTemp.gir, putts:goalsTemp.putts};
+  saveGoalsStore();
+  document.getElementById('goals-modal').classList.remove('open');
+  updateHome();
+}
+
+function updateGoalCards() {
+  document.getElementById('g-score').textContent = goals.score;
+  document.getElementById('g-fir').textContent = goals.fir + '%';
+  document.getElementById('g-gir').textContent = goals.gir + '%';
+  document.getElementById('g-putts').textContent = goals.putts;
+
+  var n = rounds.length;
+  var keys2 = ['score','fir','gir','putts'];
+  if (!n) {
+    for (var i = 0; i < keys2.length; i++) {
+      document.getElementById('g-' + keys2[i] + '-gap').textContent = 'Sin rondas aun';
+      document.getElementById('g-' + keys2[i] + '-bar').style.width = '0%';
+    }
+    return;
+  }
+
+  var aScore = Math.round(rounds.reduce(function(s,r){ return s + normalize(r).score; }, 0) / n);
+  var aPutts = Math.round(rounds.reduce(function(s,r){ return s + normalize(r).putts; }, 0) / n);
+  var aFir   = Math.round(rounds.reduce(function(s,r){ return s + r.fir; }, 0) / n);
+  var aGir   = Math.round(rounds.reduce(function(s,r){ return s + r.gir; }, 0) / n);
+
+  function pBar(cur, goal, lowerBetter) {
+    if (lowerBetter) { return Math.max(0, Math.min(100, Math.round((goal + 20 - cur) / 20 * 100))); }
+    return Math.max(0, Math.min(100, Math.round(cur / goal * 100)));
+  }
+  function gapTxt(cur, goal, unit, lowerBetter) {
+    var diff = lowerBetter ? cur - goal : goal - cur;
+    if (diff <= 0) return 'Objetivo alcanzado!';
+    return 'Faltan ' + Math.abs(diff) + unit + ' · actual ' + cur + unit;
+  }
+
+  document.getElementById('g-score-gap').textContent = gapTxt(aScore, goals.score, '', true);
+  document.getElementById('g-score-bar').style.width = pBar(aScore, goals.score, true) + '%';
+  document.getElementById('g-fir-gap').textContent = gapTxt(aFir, goals.fir, '%', false);
+  document.getElementById('g-fir-bar').style.width = pBar(aFir, goals.fir, false) + '%';
+  document.getElementById('g-gir-gap').textContent = gapTxt(aGir, goals.gir, '%', false);
+  document.getElementById('g-gir-bar').style.width = pBar(aGir, goals.gir, false) + '%';
+  document.getElementById('g-putts-gap').textContent = gapTxt(aPutts, goals.putts, '', true);
+  document.getElementById('g-putts-bar').style.width = pBar(aPutts, goals.putts, true) + '%';
 }
 
 // ── INIT ───────────────────────────────────────────────────────────────────
