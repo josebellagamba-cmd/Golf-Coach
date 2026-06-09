@@ -206,6 +206,15 @@
     .chat-suggestion{display:inline-block;margin:4px;padding:7px 14px;background:var(--bg2);border:1px solid var(--border2);border-radius:20px;font-size:12px;color:var(--text2);cursor:pointer;transition:all 0.15s}
     .chat-suggestion:active{background:var(--green-light);border-color:var(--green);color:var(--green-text)}
     .suggestions-wrap{display:flex;flex-wrap:wrap;justify-content:center;margin-top:12px}
+
+    /* GOALS */
+    .goals-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
+    .goal-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:14px 16px;box-shadow:var(--shadow-sm)}
+    .goal-lbl{font-size:11px;color:var(--text3);margin-bottom:4px;letter-spacing:0.02em}
+    .goal-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--green);line-height:1}
+    .goal-sub{font-size:10px;color:var(--text3);margin-top:3px}
+    .goal-progress-wrap{margin-top:6px;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden}
+    .goal-progress-fill{height:100%;border-radius:2px;background:var(--green);transition:width 0.5s ease}
   </style>
 </head>
 <body>
@@ -236,6 +245,50 @@
     </div>
   </div>
 
+  <!-- GOALS MODAL -->
+  <div class="modal-overlay" id="goals-modal" onclick="closeGoalsModal(event)">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <div class="modal-title">Mis objetivos</div>
+      <div class="modal-sub">Define las metas que quieres alcanzar. El coach las usara para personalizar tu analisis.</div>
+
+      <div class="modal-row">
+        <div class="modal-label">Score objetivo (18h)</div>
+        <div class="hcp-stepper">
+          <button class="hcp-btn" onclick="adjustGoal('score',-1)">−</button>
+          <div class="hcp-val" id="goal-score-val" style="font-size:20px">82</div>
+          <button class="hcp-btn" onclick="adjustGoal('score',1)">+</button>
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-label">FIR objetivo (%)</div>
+        <div class="hcp-stepper">
+          <button class="hcp-btn" onclick="adjustGoal('fir',-5)">−</button>
+          <div class="hcp-val" id="goal-fir-val" style="font-size:20px">60%</div>
+          <button class="hcp-btn" onclick="adjustGoal('fir',5)">+</button>
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-label">GIR objetivo (%)</div>
+        <div class="hcp-stepper">
+          <button class="hcp-btn" onclick="adjustGoal('gir',-5)">−</button>
+          <div class="hcp-val" id="goal-gir-val" style="font-size:20px">40%</div>
+          <button class="hcp-btn" onclick="adjustGoal('gir',5)">+</button>
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-label">Putts objetivo (18h)</div>
+        <div class="hcp-stepper">
+          <button class="hcp-btn" onclick="adjustGoal('putts',-1)">−</button>
+          <div class="hcp-val" id="goal-putts-val" style="font-size:20px">32</div>
+          <button class="hcp-btn" onclick="adjustGoal('putts',1)">+</button>
+        </div>
+      </div>
+      <button class="modal-btn" onclick="saveGoals()">Guardar objetivos</button>
+    </div>
+  </div>
+
+
   <div class="content">
 
     <!-- HOME -->
@@ -253,6 +306,36 @@
           <span>Analisis del coach</span>
         </div>
         <div id="insight-body"><div class="insight-block"><div class="insight-block-body">Registra tu primera ronda para recibir analisis personalizado basado en tus datos reales.</div></div></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:22px;margin-bottom:10px">
+        <div class="section-lbl" style="margin:0">Mis objetivos</div>
+        <button onclick="openGoalsModal()" style="background:none;border:none;font-size:12px;color:var(--green);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500">Editar</button>
+      </div>
+      <div class="goals-grid">
+        <div class="goal-card">
+          <div class="goal-lbl">Score</div>
+          <div class="goal-val" id="g-score">82</div>
+          <div class="goal-sub" id="g-score-gap"></div>
+          <div class="goal-progress-wrap"><div class="goal-progress-fill" id="g-score-bar" style="width:0%"></div></div>
+        </div>
+        <div class="goal-card">
+          <div class="goal-lbl">FIR</div>
+          <div class="goal-val" id="g-fir">60%</div>
+          <div class="goal-sub" id="g-fir-gap"></div>
+          <div class="goal-progress-wrap"><div class="goal-progress-fill" id="g-fir-bar" style="width:0%"></div></div>
+        </div>
+        <div class="goal-card">
+          <div class="goal-lbl">GIR</div>
+          <div class="goal-val" id="g-gir">40%</div>
+          <div class="goal-sub" id="g-gir-gap"></div>
+          <div class="goal-progress-wrap"><div class="goal-progress-fill" id="g-gir-bar" style="width:0%"></div></div>
+        </div>
+        <div class="goal-card">
+          <div class="goal-lbl">Putts</div>
+          <div class="goal-val" id="g-putts">32</div>
+          <div class="goal-sub" id="g-putts-gap"></div>
+          <div class="goal-progress-wrap"><div class="goal-progress-fill" id="g-putts-bar" style="width:0%"></div></div>
+        </div>
       </div>
     </div>
 
@@ -549,6 +632,7 @@ function updateHome() {
     ['h-score','h-putts','h-fir'].forEach(id => document.getElementById(id).textContent = '—');
     document.getElementById('h-trend').innerHTML = '';
     document.getElementById('insight-body').innerHTML = '<div class="insight-block"><div class="insight-block-body">Registra tu primera ronda para recibir analisis personalizado basado en tus datos reales.</div></div>';
+    updateGoalCards();
     return;
   }
 
@@ -621,6 +705,7 @@ function updateHome() {
   const priTxt = `Basado en tus datos, el orden de impacto para bajar de indice ${hcp} es: <strong>${priorities.join(', ')}</strong>. Cada sesion deberia dedicar al menos el 60% del tiempo a la primera prioridad. El plan semanal ya esta calibrado con esta logica.`;
   blocks.push({title:"Donde practicar primero", body: priTxt});
 
+  updateGoalCards();
   document.getElementById('insight-body').innerHTML = blocks.map(b => `
     <div class="insight-block">
       <div class="insight-block-title">${b.title}</div>
@@ -850,12 +935,14 @@ const PLANS = {
 let chartMetric = 'score';
 let chartInstance = null;
 
-const METRIC_CONFIG = {
-  score: { label: 'Score', color: '#8b3a2a', lower_is_better: true, target: null },
-  fir:   { label: 'FIR %', color: '#1a6b4a', lower_is_better: false, target: 60 },
-  putts: { label: 'Putts', color: '#4a3a8a', lower_is_better: true, target: 32 },
-  gir:   { label: 'GIR %', color: '#1a4a7a', lower_is_better: false, target: 33 }
-};
+function getMetricConfig() {
+  return {
+    score: { label: 'Score', color: '#8b3a2a', lower_is_better: true,  target: goals.score },
+    fir:   { label: 'FIR %', color: '#1a6b4a', lower_is_better: false, target: goals.fir },
+    putts: { label: 'Putts', color: '#4a3a8a', lower_is_better: true,  target: goals.putts },
+    gir:   { label: 'GIR %', color: '#1a4a7a', lower_is_better: false, target: goals.gir }
+  };
+}
 
 function setChartMetric(m, el) {
   chartMetric = m;
@@ -878,7 +965,7 @@ function renderProgreso() {
   canvas.style.display = 'block';
   empty.style.display = 'none';
 
-  const cfg = METRIC_CONFIG[chartMetric];
+  const cfg = getMetricConfig()[chartMetric];
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
   const W = canvas.parentElement.clientWidth - 24;
@@ -1011,10 +1098,10 @@ function renderTendencias() {
   }
 
   const metrics = [
-    { key: 'score', name: 'Score', lower_better: true, unit: '', target: Math.round(72 + hcp) },
-    { key: 'fir',   name: 'FIR',   lower_better: false, unit: '%', target: 60 },
-    { key: 'putts', name: 'Putts', lower_better: true,  unit: '', target: 32 },
-    { key: 'gir',   name: 'GIR',   lower_better: false, unit: '%', target: 33 }
+    { key: 'score', name: 'Score', lower_better: true,  unit: '',  target: goals.score },
+    { key: 'fir',   name: 'FIR',   lower_better: false, unit: '%', target: goals.fir },
+    { key: 'putts', name: 'Putts', lower_better: true,  unit: '',  target: goals.putts },
+    { key: 'gir',   name: 'GIR',   lower_better: false, unit: '%', target: goals.gir }
   ];
 
   cont.innerHTML = metrics.map(m => {
@@ -1096,6 +1183,7 @@ function buildStatsContext() {
 - FIR promedio: \${aFir}% (objetivo: 60%+)
 - GIR promedio: \${aGir}% (objetivo: 33%+)
 - Putts promedio: \${aPutts} (objetivo: 32 o menos)
+- Objetivos del jugador: score " + goals.score + ", FIR " + goals.fir + "%, GIR " + goals.gir + "%, putts " + goals.putts + "
 - Ultima ronda: score \${lastRound.score} en \${lastRound.holes||18} hoyos, FIR \${lastRound.fir}%, GIR \${lastRound.gir}%, \${lastRound.putts} putts, campo: \${lastRound.campo}`;
 }
 
@@ -1188,6 +1276,104 @@ function autoResize(el) {
 
 function chatKeydown(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+}
+
+
+// ── GOALS ──────────────────────────────────────────────────────────────────
+let goals = JSON.parse(localStorage.getItem('golf-goals') || '{"score":82,"fir":60,"gir":40,"putts":32}');
+let goalsTemp = Object.assign({}, goals);
+
+const GOAL_LIMITS = {
+  score: { min: 70, max: 110, unit: '' },
+  fir:   { min: 20, max: 100, unit: '%' },
+  gir:   { min: 10, max: 90,  unit: '%' },
+  putts: { min: 24, max: 40,  unit: '' }
+};
+
+function saveGoalsStore() { localStorage.setItem('golf-goals', JSON.stringify(goals)); }
+
+function openGoalsModal() {
+  goalsTemp = Object.assign({}, goals);
+  updateGoalDisplays();
+  document.getElementById('goals-modal').classList.add('open');
+}
+function closeGoalsModal(e) {
+  if (e.target === document.getElementById('goals-modal'))
+    document.getElementById('goals-modal').classList.remove('open');
+}
+function adjustGoal(key, delta) {
+  const lim = GOAL_LIMITS[key];
+  goalsTemp[key] = Math.max(lim.min, Math.min(lim.max, goalsTemp[key] + delta));
+  document.getElementById('goal-' + key + '-val').textContent = goalsTemp[key] + lim.unit;
+}
+function updateGoalDisplays() {
+  Object.keys(GOAL_LIMITS).forEach(function(key) {
+    const lim = GOAL_LIMITS[key];
+    document.getElementById('goal-' + key + '-val').textContent = goalsTemp[key] + lim.unit;
+  });
+}
+function saveGoals() {
+  goals = Object.assign({}, goalsTemp);
+  saveGoalsStore();
+  document.getElementById('goals-modal').classList.remove('open');
+  updateHome();
+}
+
+function updateGoalCards() {
+  const n = rounds.length;
+  // Score
+  document.getElementById('g-score').textContent = goals.score;
+  document.getElementById('g-fir').textContent = goals.fir + '%';
+  document.getElementById('g-gir').textContent = goals.gir + '%';
+  document.getElementById('g-putts').textContent = goals.putts;
+
+  if (!n) {
+    ['score','fir','gir','putts'].forEach(function(k) {
+      document.getElementById('g-' + k + '-gap').textContent = 'Sin rondas aun';
+      document.getElementById('g-' + k + '-bar').style.width = '0%';
+    });
+    return;
+  }
+
+  const aScore = Math.round(rounds.reduce(function(s,r){ return s + normalize(r).score; }, 0) / n);
+  const aPutts = Math.round(rounds.reduce(function(s,r){ return s + normalize(r).putts; }, 0) / n);
+  const aFir   = Math.round(rounds.reduce(function(s,r){ return s + r.fir; }, 0) / n);
+  const aGir   = Math.round(rounds.reduce(function(s,r){ return s + r.gir; }, 0) / n);
+
+  function progressBar(current, goal, lowerBetter) {
+    if (lowerBetter) {
+      // For score/putts: lower is better. Assume worst = goal + 20
+      const worst = goal + 20;
+      const pct = Math.max(0, Math.min(100, Math.round((worst - current) / 20 * 100)));
+      return pct;
+    } else {
+      // For fir/gir: higher is better
+      const pct = Math.max(0, Math.min(100, Math.round(current / goal * 100)));
+      return pct;
+    }
+  }
+
+  function gapText(current, goal, unit, lowerBetter) {
+    const diff = lowerBetter ? current - goal : goal - current;
+    if (diff <= 0) return 'Objetivo alcanzado!';
+    return 'Faltan ' + Math.abs(diff) + unit + ' · actual ' + current + unit;
+  }
+
+  // Score
+  document.getElementById('g-score-gap').textContent = gapText(aScore, goals.score, '', true);
+  document.getElementById('g-score-bar').style.width = progressBar(aScore, goals.score, true) + '%';
+
+  // FIR
+  document.getElementById('g-fir-gap').textContent = gapText(aFir, goals.fir, '%', false);
+  document.getElementById('g-fir-bar').style.width = progressBar(aFir, goals.fir, false) + '%';
+
+  // GIR
+  document.getElementById('g-gir-gap').textContent = gapText(aGir, goals.gir, '%', false);
+  document.getElementById('g-gir-bar').style.width = progressBar(aGir, goals.gir, false) + '%';
+
+  // Putts
+  document.getElementById('g-putts-gap').textContent = gapText(aPutts, goals.putts, '', true);
+  document.getElementById('g-putts-bar').style.width = progressBar(aPutts, goals.putts, true) + '%';
 }
 
 // ── INIT ───────────────────────────────────────────────────────────────────
