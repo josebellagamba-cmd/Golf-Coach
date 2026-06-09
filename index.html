@@ -1032,11 +1032,11 @@ function renderTendencias() {
 
     return `<div class="tend-card">
       <div class="tend-row">
-        <span class="tend-name">\${m.name}</span>
-        <span class="tend-badge \${badgeClass}">\${arrow} \${label}</span>
+        <span class="tend-name">${m.name}</span>
+        <span class="tend-badge ${badgeClass}">${arrow} ${label}</span>
       </div>
-      <div class="tend-bar-bg"><div class="tend-bar-fill" style="width:\${Math.max(5,pct)}%;background:\${barColor}"></div></div>
-      <div class="tend-detail">Promedio reciente: <strong>\${newAvg.toFixed(1)}\${m.unit}</strong> · \${diffTxt}\${m.target ? ' · objetivo: \${m.target}\${m.unit}' : ''}</div>
+      <div class="tend-bar-bg"><div class="tend-bar-fill" style="width:${Math.max(5,pct)}%;background:${barColor}"></div></div>
+      <div class="tend-detail">Promedio reciente: <strong>${newAvg.toFixed(1)}${m.unit}</strong> · ${diffTxt}${m.target ? ' · objetivo: ${m.target}${m.unit}' : ''}</div>
     </div>`;
   }).join('');
 }
@@ -1048,20 +1048,33 @@ let chatReady = false;
 function initChat() {
   if (chatReady) return;
   chatReady = true;
-  const msgs = document.getElementById('chat-messages');
+  const msgs = document.getElementById("chat-messages");
   const suggestions = [
-    'Por que sigo perdiendo el driver a la derecha?',
-    'Como mejorar mis putts largos?',
-    'Que debo practicar esta semana?',
-    'Como salir mejor del bunker?'
+    "Por que sigo perdiendo el driver a la derecha?",
+    "Como mejorar mis putts largos?",
+    "Que debo practicar esta semana?",
+    "Como salir mejor del bunker?"
   ];
-  msgs.innerHTML = `<div class="chat-welcome">
-    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-    <p>Hola, soy tu <strong>coach de golf personal</strong>.<br>Puedo analizar tus estadisticas y responder preguntas tecnicas sobre tu juego.</p>
-    <div class="suggestions-wrap">
-      ' + suggestions.map(s => '<span class="chat-suggestion" onclick="useSuggestion(\'' + s + '\')">'+s+'</span>').join('') + '
-    </div>
-  </div>`;
+  const wrap = document.createElement("div");
+  wrap.className = "chat-welcome";
+  const svg = document.createElementNS("http://www.w3.org/2000/svg","svg");
+  svg.setAttribute("viewBox","0 0 24 24");
+  svg.innerHTML = "<path d=\"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z\"/>";
+  wrap.appendChild(svg);
+  const p = document.createElement("p");
+  p.innerHTML = "Hola, soy tu <strong>coach de golf personal</strong>.<br>Puedo analizar tus estadisticas y responder preguntas tecnicas sobre tu juego.";
+  wrap.appendChild(p);
+  const sugWrap = document.createElement("div");
+  sugWrap.className = "suggestions-wrap";
+  suggestions.forEach(function(s) {
+    const btn = document.createElement("span");
+    btn.className = "chat-suggestion";
+    btn.textContent = s;
+    btn.onclick = function() { useSuggestion(s); };
+    sugWrap.appendChild(btn);
+  });
+  wrap.appendChild(sugWrap);
+  msgs.appendChild(wrap);
 }
 
 function useSuggestion(text) {
