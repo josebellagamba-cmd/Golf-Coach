@@ -486,8 +486,7 @@ function showPage(id, btn) {
   btn.classList.add('active');
   if (id === 'stats') renderStats();
   if (id === 'home') updateHome();
-  if (id === 'progreso') renderProgreso();
-  if (id === 'coach') initChat();
+  if (id === 'progreso') setTimeout(renderProgreso, 50);
 }
 
 // ── HOLES TOGGLE ───────────────────────────────────────────────────────────
@@ -954,7 +953,7 @@ function renderProgreso() {
   const cfg = getMetricConfig()[chartMetric];
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
-  const W = canvas.parentElement.clientWidth - 24;
+  const W = Math.max(canvas.parentElement.clientWidth - 24, 200);
   const H = 180;
   canvas.width = W * dpr;
   canvas.height = H * dpr;
