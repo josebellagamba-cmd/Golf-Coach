@@ -1123,7 +1123,7 @@ function renderTendencias() {
         <span class="tend-badge ${badgeClass}">${arrow} ${label}</span>
       </div>
       <div class="tend-bar-bg"><div class="tend-bar-fill" style="width:${Math.max(5,pct)}%;background:${barColor}"></div></div>
-      <div class="tend-detail">Promedio reciente: <strong>${newAvg.toFixed(1)}${m.unit}</strong> · ${diffTxt}${m.target ? ' · objetivo: ${m.target}${m.unit}' : ''}</div>
+      <div class="tend-detail">Promedio reciente: <strong>${newAvg.toFixed(1)}${m.unit}</strong> · ${diffTxt}${m.target !== undefined ? ' · objetivo: ' + m.target + m.unit : ''}</div>
     </div>`;
   }).join('');
 }
